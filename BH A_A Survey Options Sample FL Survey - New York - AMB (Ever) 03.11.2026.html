@@ -1,0 +1,162 @@
+BH A_A Survey Options Sample FL Survey - New York - AMB (Ever) 03.11.2026
+
+<div class="FeatureScript_Page" name="NewYorkAmbBhAhFlSurveyOptions">
+
+    <div class="FeatureScript_Section" name="LivePerson">
+        <div class="FeatureScript_Text">
+            Start - Did a live person answer?
+            <select class="FeatureScript_Input" name="AHLiveAnswer">
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="FeatureScript_Section" name="LivePersonYes" DisplayWhen="([ScriptValue: AHLiveAnswer] == 'Yes')">
+        <div class="FeatureScript_Section" name="Introduction">
+            <div class="FeatureScript_Text">
+                Hi, my name is <span style="font-weight: bold;">[User: alias]</span>.  I am calling on behalf of <span style="font-weight: bold;">[Field: company_name]</span> on a recorded line 
+                for training and quality assurance reasons to conduct a required Audit of your office's availability of an on-call Practitioners for members who may need afterhours care.   
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="Question1">
+            <div class="FeatureScript_Text">
+                Q 1 - Is this the office or answering service at <span style="font-weight: bold;">[Field: practice_name]</span>?
+                <select class="FeatureScript_Input" name="CorrectOffice">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <br><br>
+                <div class="FeatureScript_Section" name="Question2.1" DisplayWhen="([ScriptValue: CorrectOffice] == 'No')">
+                    <span style='color: red; font-weight: bold;'>* Go to Close *</span>
+                </div>                
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="Question2" DisplayWhen="([ScriptValue: CorrectOffice] == 'Yes')">
+            <div class="FeatureScript_Text">
+                Q 2 - May I ask who I am speaking with?
+                <select class="FeatureScript_Input" name="CallerNameAnswer">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <br><br>
+                <div class="FeatureScript_Section" name="Question2.1" DisplayWhen="([ScriptValue: CallerNameAnswer] == 'Yes')">
+                    <span style='color: black; font-weight: bold;'>* If Yes - Enter Name</span>
+                    <input type="text" name="CallerName" class="FeatureScript_Input">
+                </div>
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="Question3"  DisplayWhen="([ScriptValue: CallerNameAnswer] == 'No' || [ScriptValue: CallerName] != '')">
+            <div class="FeatureScript_Text">
+                Q 3 - If a member must access their Behavioral Health provider, after office hours, are you able to connect the member with any of the following at this time?
+                <br>
+                <select class="FeatureScript_Input" name="AHAccessibilityResponse">
+                    <option value=""></option>
+                    <option value="Behavioral Health practitioner or on-call Behavioral Health clinician">Behavioral Health practitioner or on-call Behavioral Health clinician</option>
+                    <option value="Behavioral Health nurse, crisis clinician, or advice nurse with access to a Behavioral Health Practitioner">Behavioral Health nurse, crisis clinician, or advice nurse with access to a Behavioral Health Practitioner</option>                                        
+                    <option value="None of the above">None of the above</option>
+                    <option value="Other">Other</option>
+                    <option value="Answering system provides a direct transfer or paging option to a Behavioral Health practitioner or on-call clinician" hidden>Answering system provides a direct transfer or paging option to a Behavioral Health practitioner or on-call clinician</option>
+                    <option value="Answering system directs or directly connects callers to 24-hour crisis services" hidden>Answering system directs or directly connects callers to 24-hour crisis services</option>
+                    <option value="Advice Nurse with access to physician" hidden>Advice Nurse with access to physician</option>
+                    <option value="Pages provider once message is left" hidden>Pages provider once message is left</option>
+                    <option value="Please hold or Press # for Physician Exchange" hidden>Please hold or Press # for Physician Exchange</option>
+                    <option value="Please hold or Press # for answering service" hidden>Please hold or Press # for answering service</option>
+                    <option value="An answering machine that only takes a message" hidden>An answering machine that only takes a message</option>
+                    <option value="Message provides a phone number, pager, email, text, or voicemail without direct connection" hidden>Message provides a phone number, pager, email, text, or voicemail without direct connection</option>
+                    <option value="Recommends calling during business hours only" hidden>Recommends calling during business hours only</option>
+                    <option value="Recommends going to an urgent care center or emergency room because there is no after hours access to the Behavioral Health Practitioner or on-call physician." hidden>Recommends going to an urgent care center or emergency room because there is no after hours access to the Behavioral Health Practitioner or on-call physician.</option>
+                    <option value="Other" hidden>Other</option>
+                </select>
+                <br><br>
+
+                <div class="FeatureScript_Section" name="DispoPassed" DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Behavioral Health practitioner or on-call Behavioral Health clinician' || 
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Behavioral Health nurse, crisis clinician, or advice nurse with access to a Behavioral Health Practitioner')">
+                    <span style='color: red; font-weight: bold;'>* End Call - Dispo as Passed *</span>
+                </div>
+
+                <div class="FeatureScript_Section" name="DispoFailed" DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'None of the above' || 
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Other')">
+                    <span style='color: red; font-weight: bold;'>* End Call - Dispo as Failed *</span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="FeatureScript_Section" name="LivePersonNo" DisplayWhen="([ScriptValue: AHLiveAnswer] == 'No')">
+        <div class="FeatureScript_Text">
+             Q 4 - If you reach an ANSWERING MACHINE/IVR - LISTEN to the entire message and confirm the outgoing message pertains to a Behavioral Health practitioner included in the survey. Document one of the following dispositions once the entire message is heard.
+            <br><br>
+            PROVIDERS AT THIS NUMBER ARE:
+            <br>
+            [Field: first_name] [Field: last_name]
+            <br><br>
+            <select class="FeatureScript_Input" name="AHAccessibilityResponse">
+                <option value=""></option>
+                <option value="Behavioral Health practitioner or on-call Behavioral Health clinician" hidden>Behavioral Health practitioner or on-call Behavioral Health clinician</option>
+                <option value="Behavioral Health nurse, crisis clinician, or advice nurse with access to a Behavioral Health Practitioner" hidden>Behavioral Health nurse, crisis clinician, or advice nurse with access to a Behavioral Health Practitioner</option>                                
+                <option value="None of the above" hidden>None of the above</option>
+                <option value="Other" hidden>Other</option>
+                <option value="Answering system provides a direct transfer or paging option to a Behavioral Health practitioner or on-call clinician">Answering system provides a direct transfer or paging option to a Behavioral Health practitioner or on-call clinician</option>
+                <option value="Answering system directs or directly connects callers to 24-hour crisis services">Answering system directs or directly connects callers to 24-hour crisis services</option>
+                <option value="Advice Nurse with access to physician">Advice Nurse with access to physician</option>
+                <option value="Pages provider once message is left">Pages provider once message is left</option>
+                <option value="Please hold or Press # for Physician Exchange">Please hold or Press # for Physician Exchange</option>
+                <option value="Please hold or Press # for answering service">Please hold or Press # for answering service</option>
+                <option value="An answering machine that only takes a message">An answering machine that only takes a message</option>
+                <option value="Message provides a phone number, pager, email, text, or voicemail without direct connection">Message provides a phone number, pager, email, text, or voicemail without direct connection</option>
+                <option value="Recommends calling during business hours only">Recommends calling during business hours only</option>
+                <option value="Recommends going to an urgent care center or emergency room because there is no after hours access to the Behavioral Health Practitioner or on-call physician.">Recommends going to an urgent care center or emergency room because there is no after hours access to the Behavioral Health Practitioner or on-call physician.</option>
+                <option value="Other">Other</option>
+            </select>
+            <br><br>
+
+            <div class="FeatureScript_Section" name="ChangeToLive" DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Please hold or Press # for answering service')">
+                <span style='color: red; font-weight: bold;'>** Change Start to - 'Yes' **<br><br>** Go to Q-1 **</span>
+            </div>
+
+            <div class="FeatureScript_Section" name="DispoPassed2" 
+                DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Answering system provides a direct transfer or paging option to a Behavioral Health practitioner or on-call clinician' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Answering system directs or directly connects callers to 24-hour crisis services' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Advice Nurse with access to physician' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Pages provider once message is left' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Please hold or Press # for Physician Exchange')">
+                <span style='color: red; font-weight: bold;'>* Dispo as Passed *</span>
+            </div>
+
+            <div class="FeatureScript_Section" name="DispoFailed2" 
+                DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'An answering machine that only takes a message' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Message provides a phone number, pager, email, text, or voicemail without direct connection' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours only' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Recommends going to an urgent care center or emergency room because there is no after hours access to the Behavioral Health Practitioner or on-call physician.' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Other')">
+                <span style='color: red; font-weight: bold;'>* Dispo as Failed *</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="FeatureScript_Section" name="Closing" DisplayWhen="(([ScriptValue: AHAccessibilityResponse] != '' && [ScriptValue: AHAccessibilityResponse] != 'Please hold or Press # for answering service') || [ScriptValue: CorrectOffice] == 'No')">
+        <div class="FeatureScript_Text">
+            <span style="color: red; font-weight: bold;">
+                ** This completes the audit. Thank you for your time, and have a great day! **
+            </span>
+        </div>
+
+    </div>    
+
+</div>
+
+
+AHAccessibilityResponseResult = ([ScriptValue: AHAccessibilityResponse] == 'Behavioral Health practitioner or on-call Behavioral Health clinician' && [ScriptValue: AHAccessibilityResponse] == 'Behavioral Health nurse, crisis clinician, or advice nurse with access to a Behavioral Health Practitioner' && [ScriptValue: AHAccessibilityResponse] == 'Answering system provides a direct transfer or paging option to a Behavioral Health practitioner or on-call clinician' && [ScriptValue: AHAccessibilityResponse] == 'Answering system directs or directly connects callers to 24-hour crisis services' && [ScriptValue: AHAccessibilityResponse] == 'Advice Nurse with access to physician' && [ScriptValue: AHAccessibilityResponse] == 'Pages provider once message is left' && [ScriptValue: AHAccessibilityResponse] == 'Please hold or Press # for Physician Exchange'),
+AHAccessibilityResponseResultIncomplete = ([ScriptValue: AHAccessibilityResponse] == 'None of the above' && [ScriptValue: AHAccessibilityResponse] == 'An answering machine that only takes a message' && [ScriptValue: AHAccessibilityResponse] == 'Message provides a phone number, pager, email, text, or voicemail without direct connection' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours only' && [ScriptValue: AHAccessibilityResponse] == 'Recommends going to an urgent care center or emergency room because there is no after hours access to the Behavioral Health Practitioner or on-call physician.' && [ScriptValue: AHAccessibilityResponse] == 'Other')
+

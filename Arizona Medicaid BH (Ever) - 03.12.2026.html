@@ -1,0 +1,1377 @@
+Arizona Medicaid BH (Ever) - 03.12.2026
+
+<!-- ===================== PAGE WRAPPER ===================== -->
+<div class="FeatureScript_Page" name="ArizonaMedicaidAmbetter" StepButtons="ScriptStep" MaxStepValue="11">
+
+    <!-- ===================== INTRODUCTION ===================== -->
+    <div class="FeatureScript_Section" name="introduction">
+        <div class="FeatureScript_Text">
+            Hi, my name is <strong>[User: alias]</strong>. I am calling on behalf of 
+            <strong>[Field: company_name]</strong> on a recorded line for training and quality 
+            assurance reasons to conduct a required Regulatory Audit of your office's appointment 
+            availability and wait times. This will only take a few minutes.
+            <br>
+            <br>
+            For Automated Systems: <strong>PLEASE LISTEN TO THE MENU PROMPTS AND CAREFULLY CHOOSE THE 
+            CORRECT ONE TO GET TO THE APPOINTMENT LINE, DOCTOR'S OFFICE, ETC.</strong>
+        </div>
+    </div>
+
+    <!-- ===================== SCRIPTSTEP 0 — Q1 to Q5 ===================== -->
+    <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ScriptStep] == 0">
+
+        <!-- Q1 -->
+         <div class="FeatureScript_Section">
+            <div class="FeatureScript_Text">
+                Q 1. Can you confirm that <strong>[Field: practice_name]</strong> participates with <strong>[Field: company_name]</strong>?
+                <br>
+                <select name="ParticipatingProvider" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Do not Read/Not able to ascertain">Do not Read/Not able to ascertain</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ParticipatingProvider] == 'No'">
+            <div class="FeatureScript_Text" style="color:red; font-weight:bold;">
+                * Go to Close *
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ParticipatingProvider] == 'Do not Read/Not able to ascertain'">
+            <div class="FeatureScript_Text" style="color:red; font-weight:bold;">
+                * End Call — Add number to redialer (no pass/fail) *
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ParticipatingProvider] == 'Yes'">
+            <div class="FeatureScript_Text">
+                Q 2. Can you confirm <strong>[Field: phone]</strong> is the correct number a patient would dial to schedule appointments?
+                <br>
+                <select name="CentralScheduling" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: CentralScheduling] == 'No'">
+            <div class="FeatureScript_Text">
+                Q 3. If no — can you please provide that number and transfer me?
+                <br>
+                <select name="ProviderNewPhoneAnswer" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ProviderNewPhoneAnswer] == 'No'">
+                <div class="FeatureScript_Text" style="color:red; font-weight:bold;">
+                    * End Call — Dispo new number *
+                </div>
+            </div>
+
+            <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ProviderNewPhoneAnswer] == 'Yes'">
+                <div class="FeatureScript_Text">
+                    <span style="color: red; font-weight:bold;">* Ask to be transferred to the new number — Repeat Intro, Go to Q-4 *</span> 
+                    <br>
+                    <input type="text" name="ProviderNewPhone" class="FeatureScript_Input" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: CentralScheduling] == 'Yes' || [ScriptValue: CentralScheduling] == 'Do not Read/Not able to ascertain' || [ScriptValue: ProviderNewPhone] != '')">
+            <div class="FeatureScript_Text">
+                Q 4. May I ask who I am speaking with?
+                <br>
+                <select name="CallerNameAnswer" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: CallerNameAnswer] == 'Yes'">
+                <div class="FeatureScript_Text">
+                    If Yes - Enter Name: 
+                    <input type="text" name="CallerName" class="FeatureScript_Input" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: CallerNameAnswer] == 'No' || [ScriptValue: CallerName] != ''">
+            <div class="FeatureScript_Text">
+                Q 5. Can you please confirm that <strong>[Field: physician_segmentation_id]</strong> is the correct category for <strong>[Field: practice_name]</strong>?
+                <br>
+                <select name="CorrectSegmentation" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: CorrectSegmentation] == 'No'">
+                <div class="FeatureScript_Text" style="color:red; font-weight:bold;">
+                    * If No — End Call dispo Wrong Segmentation *
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Fixed Text Assistant-->
+    <div class="FeatureScript_Section" name="Introduction2" DisplayWhen="([ScriptValue: ScriptStep] >= 1) && [ScriptValue: CorrectSegmentation] == 'Yes'">
+        <div class="FeatureScript_Text">
+            <span style="color: black; font-weight: bold;">* Now I am going to ask you a few questions about appointment availability *</span>
+        </div>
+    </div>
+
+    <!-- ===================== SCRIPTSTEP 1 — Q6 ===================== -->
+    <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ScriptStep] == 1 && [ScriptValue: CorrectSegmentation] == 'Yes'">
+        <div class="FeatureScript_Text">
+            Q 6. Does your office offer <strong>Telehealth</strong> appointments?
+            <br>
+            <select name="TeleHealthOffered" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="FeatureScript_Section" name="section2" DisplayWhen="[ScriptValue: ScriptStep] == 2 && [ScriptValue: TeleHealthOffered] != ''">
+        <div class="FeatureScript_Section" name="question7">
+            <div class="FeatureScript_Text">
+                Q 7. Our first appointment type is <strong>Urgently Needed Care</strong>. 
+                <br>
+                On what date and time is the earliest available in person urgent appointment with any provider?
+            </div>
+
+            <select name="NextUrgentAptResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Date and Time entry -->
+            <div class="FeatureScript_Section" name="question7_date" DisplayWhen="([ScriptValue: NextUrgentAptResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="NextUrgentAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question7_date2" DisplayWhen="([ScriptValue: NextUrgentAptResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="NextUrgentAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- UTO block -->
+            <div class="FeatureScript_Section" name="question7_uto"
+                DisplayWhen="([ScriptValue: NextUrgentAptResponse] == 'Unable to Obtain')">
+
+                <span style="color: red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="NextUrgentAptResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+        </div>
+        
+
+        <!-- Telehealth -->
+        <div class="FeatureScript_Section" name="telehealth7" DisplayWhen="([ScriptValue: TeleHealthOffered] == 'Yes')">
+            <div class="FeatureScript_Text">
+                On what date and time is the earliest available <strong>Telehealth Urgent Appointment</strong> with any provider?                
+            </div>
+
+            <select name="UrgentTeleHealthResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <div class="FeatureScript_Section" name="question7_datetele" DisplayWhen="([ScriptValue: UrgentTeleHealthResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="UrgentTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question7_datetele2" DisplayWhen="([ScriptValue: UrgentTeleHealthResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="UrgentTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question7_utoTele"
+                DisplayWhen="([ScriptValue: UrgentTeleHealthResponse] == 'Unable to Obtain')">
+
+                <span style="color: red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="UrgentTeleHealthResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Q8 -->
+    <div class="FeatureScript_Section" name="section3" DisplayWhen="([ScriptValue: ScriptStep] == 3 && 
+                                ([ScriptValue: NextUrgentAptResponse] != 'Unable to Obtain' && 
+                                ([ScriptValue: TeleHealthOffered] == 'No' || [ScriptValue: UrgentTeleHealthResponse] != 'Unable to Obtain')))">
+        <div class="FeatureScript_Section" name="question8">
+            <div class="FeatureScript_Text">
+                Q 8. Our next appointment type is for an <strong>Initial Assessment or Routine Care</strong>. 
+                <br>
+                On what date and time is the earliest available in person appointment for an initial assessment with any provider?
+            </div>
+
+            <select name="NextRoutineAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <div class="FeatureScript_Section" name="question8_date" DisplayWhen="([ScriptValue: NextRoutineAptDateTimeResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="NextRoutineAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question8_date2" DisplayWhen="([ScriptValue: NextRoutineAptDateTimeResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="NextRoutineAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question8_uto"
+                DisplayWhen="([ScriptValue: NextRoutineAptDateTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="NextRoutineAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Telehealth -->
+        <div class="FeatureScript_Section" name="telehealth8" DisplayWhen="([ScriptValue: TeleHealthOffered] == 'Yes')">
+            <div class="FeatureScript_Text">
+                Is this Date and Time the same for <strong>Telehealth Appointments</strong>?
+            </div>
+
+            <select name="RoutineTeleHealthResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <div class="FeatureScript_Section" name="question8_datetele" DisplayWhen="([ScriptValue: RoutineTeleHealthResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="RoutineTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question8_datetele2" DisplayWhen="([ScriptValue: RoutineTeleHealthResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="RoutineTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question8_utotele"
+                DisplayWhen="([ScriptValue: RoutineTeleHealthResponse] == 'Unable to Obtain')">
+
+                <span style='color:red;'>* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="RoutineTeleHealthResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Q9 -->
+    <div class="FeatureScript_Section" name="section4" DisplayWhen="([ScriptValue: ScriptStep] == 4 && 
+                        ([ScriptValue: NextRoutineAptDateTimeResponse] != 'Unable to Obtain' && 
+                        ([ScriptValue: TeleHealthOffered] == 'No' || [ScriptValue: RoutineTeleHealthResponse] != 'Unable to Obtain')))">
+        <div class="FeatureScript_Section" name="question9">
+            <div class="FeatureScript_Text">
+                Q 9. Our next appointment type is for an initial appointment following the <strong>Initial Adult (18 or older) Assessment</strong>.                
+                <br>
+                On what date and time is the earliest available <strong>In person Initial appointment for an Adult (18 or Older)</strong> with any provider.
+            </div>
+
+            <select name="InitialAdultAssesmentAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Q9.1 Date entry -->
+            <div class="FeatureScript_Section" name="question9_date" DisplayWhen="([ScriptValue: InitialAdultAssesmentAptDateTimeResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="InitialAdultAssesmentAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question9_date2" DisplayWhen="([ScriptValue: InitialAdultAssesmentAptDateTimeResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="InitialAdultAssesmentAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Q9 - UTO -->
+            <div class="FeatureScript_Section"  name="question9_uto"
+                DisplayWhen="([ScriptValue: InitialAdultAssesmentAptDateTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="InitialAdultAssesmentAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- TELEHEALTH -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: TeleHealthOffered] == 'Yes'">
+            <div class="FeatureScript_Text">
+                On what date and time is the earliest available <strong>Telehealth Initial appointment for an Adult(18 or Older)</strong> with any provider?
+            </div>
+
+            <select name="InitialAdultAssesmentTeleResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Telehealth date -->
+            <div class="FeatureScript_Section" name="question9_datetele" DisplayWhen="([ScriptValue: InitialAdultAssesmentTeleResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="InitialAdultAssesmentTeleAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question9_datetele2" DisplayWhen="([ScriptValue: InitialAdultAssesmentTeleResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="InitialAdultAssesmentTeleAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Telehealth UTO -->
+            <div class="FeatureScript_Section"  name="question9_utotele"
+                DisplayWhen="([ScriptValue: InitialAdultAssesmentTeleResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="InitialAdultAssesmentTeleResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Q10 -->
+    <div class="FeatureScript_Section" name="section5" DisplayWhen="([ScriptValue: ScriptStep] == 5 && 
+                    ([ScriptValue: InitialAdultAssesmentAptDateTimeResponse] != 'Unable to Obtain' && 
+                    ([ScriptValue: TeleHealthOffered] == 'No' || [ScriptValue: InitialAdultAssesmentTeleResponse] != 'Unable to Obtain')))">
+        <div class="FeatureScript_Section" name="question10">
+            <div class="FeatureScript_Text">
+                Q 10. Our next appointment type is for an initial appointment following the <strong>Initial Assessment for a Minor (under 18 yo)</strong>.
+                <br>
+                On what date and time is the earliest available <strong>In person Initial appointment for a Minor (under 18 yo)</strong> with any provider?
+            </div>
+
+            <select name="InitialMinorAssesmentAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Q10.1 Date entry -->
+            <div class="FeatureScript_Section" name="question10_date" DisplayWhen="([ScriptValue: InitialMinorAssesmentAptDateTimeResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="InitialMinorAssesmentAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question10_date2" DisplayWhen="([ScriptValue: InitialMinorAssesmentAptDateTimeResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="InitialMinorAssesmentAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Q10 - UTO -->
+            <div class="FeatureScript_Section"  name="question10_uto"
+                DisplayWhen="([ScriptValue: InitialMinorAssesmentAptDateTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="InitialMinorAssesmentAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- TELEHEALTH -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: TeleHealthOffered] == 'Yes'">
+            <div class="FeatureScript_Text">
+                On what date and time is the earliest available <strong>Telehealth Initial Appointment for a Minor (under 18 yo)</strong> with any provider?
+            </div>
+
+            <select name="InitialMinorAssesmentTeleAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Telehealth date -->
+            <div class="FeatureScript_Section" name="question10_datetele" DisplayWhen="([ScriptValue: InitialMinorAssesmentTeleAptDateTimeResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="InitialMinorAssesmentTeleAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question10_datetele2" DisplayWhen="([ScriptValue: InitialMinorAssesmentTeleAptDateTimeResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="InitialMinorAssesmentTeleAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Telehealth UTO -->
+            <div class="FeatureScript_Section"  name="question10_utotele"
+                DisplayWhen="([ScriptValue: InitialMinorAssesmentTeleAptDateTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="InitialMinorAssesmentTeleAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Q11 -->
+    <div class="FeatureScript_Section" name="section6" DisplayWhen="([ScriptValue: ScriptStep] == 6 && 
+                ([ScriptValue: InitialMinorAssesmentAptDateTimeResponse] != 'Unable to Obtain' && 
+                ([ScriptValue: TeleHealthOffered] == 'No' || [ScriptValue: InitialMinorAssesmentTeleAptDateTimeResponse] != 'Unable to Obtain')))">
+        <div class="FeatureScript_Section" name="question11">
+            <div class="FeatureScript_Text">
+                Q 11. Our next appointment type is <strong>non-life-threatening psychiatric emergency care. Example: Self harm</strong>. 
+                <br>
+                On what date and time is the next available appointment?
+            </div>
+
+            <select name="NextPsychAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Q11.1 Date entry -->
+            <div class="FeatureScript_Section" name="question11_date" DisplayWhen="([ScriptValue: NextPsychAptDateTimeResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="NextPsychAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question11_date2" DisplayWhen="([ScriptValue: NextPsychAptDateTimeResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="NextPsychAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Q11 - UTO -->
+            <div class="FeatureScript_Section"  name="question11_uto"
+                DisplayWhen="([ScriptValue: NextPsychAptDateTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="NextPsychAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- TELEHEALTH -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: TeleHealthOffered] == 'Yes'">
+            <div class="FeatureScript_Text">
+                Is this Date and Time the same for <strong>Telehealth Appointments</strong>?
+            </div>
+
+            <select name="PsychTeleHealthResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Telehealth date -->
+            <div class="FeatureScript_Section" name="question11_datetele" DisplayWhen="([ScriptValue: PsychTeleHealthResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="PsychTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question11_datetele2" DisplayWhen="([ScriptValue: PsychTeleHealthResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="PsychTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Telehealth UTO -->
+            <div class="FeatureScript_Section"  name="question11_utotele"
+                DisplayWhen="([ScriptValue: PsychTeleHealthResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="PsychTeleHealthResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Q12 -->
+    <div class="FeatureScript_Section" name="section7" DisplayWhen="([ScriptValue: ScriptStep] == 7 && 
+                ([ScriptValue: NextPsychAptDateTimeResponse] != 'Unable to Obtain' && 
+                ([ScriptValue: TeleHealthOffered] == 'No' || [ScriptValue: PsychTeleHealthResponse] != 'Unable to Obtain')))">
+        <div class="FeatureScript_Section" name="question12">
+            <div class="FeatureScript_Text">
+                Q 12. Our next appointment type is for <strong>Subsequent Behavioral Health Services</strong>.
+                <br>
+                On what date and time is the earliest available <strong>In person Appointment for subsequent behavioral health services</strong> with any provider?
+            </div>
+
+            <select name="SubsequentBehavioralHealthServices" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Q12.1 Date entry -->
+            <div class="FeatureScript_Section" name="question12_date" DisplayWhen="([ScriptValue: SubsequentBehavioralHealthServices] == 'Specific Date And Time')">
+                <input type="datetime-local" name="SubsequentBehavioralHealthServicesAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question12_date2" DisplayWhen="([ScriptValue: SubsequentBehavioralHealthServices] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="SubsequentBehavioralHealthServicesAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Q12 - UTO -->
+            <div class="FeatureScript_Section"  name="question12_uto"
+                DisplayWhen="([ScriptValue: SubsequentBehavioralHealthServices] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="SubsequentBehavioralHealthServices" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- TELEHEALTH -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: TeleHealthOffered] == 'Yes'">
+            <div class="FeatureScript_Text">
+                On what date and time is the earliest available <strong>Telehealth Appointment for subsequent behavioral health services</strong> with any provider?
+            </div>
+
+            <select name="SubsequentBehavioralTeleHealthResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Telehealth date -->
+            <div class="FeatureScript_Section" name="question12_datetele" DisplayWhen="([ScriptValue: SubsequentBehavioralTeleHealthResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="SubsequentBehavioralTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question12_datetele2" DisplayWhen="([ScriptValue: SubsequentBehavioralTeleHealthResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="SubsequentBehavioralTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Telehealth UTO -->
+            <div class="FeatureScript_Section"  name="question12_utotele"
+                DisplayWhen="([ScriptValue: SubsequentBehavioralTeleHealthResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="SubsequentBehavioralTeleHealthResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Q13 -->
+    <div class="FeatureScript_Section" name="section8" DisplayWhen="([ScriptValue: ScriptStep] == 8 && 
+                ([ScriptValue: SubsequentBehavioralHealthServices] != 'Unable to Obtain' && 
+                ([ScriptValue: TeleHealthOffered] == 'No' || [ScriptValue: SubsequentBehavioralTeleHealthResponse] != 'Unable to Obtain')))">
+        <div class="FeatureScript_Section" name="question13">
+            <div class="FeatureScript_Text">
+                Q 13. On what date and time is the next available <strong>FOLLOW UP ROUTINE CARE</strong> in person appointment?
+                <br>
+            </div>
+
+            <select name="NextFURoutineAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Q13.1 Date entry -->
+            <div class="FeatureScript_Section" name="question13_date" DisplayWhen="([ScriptValue: NextFURoutineAptDateTimeResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="NextFURoutineAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question13_date2" DisplayWhen="([ScriptValue: NextFURoutineAptDateTimeResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="NextFURoutineAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Q13 - UTO -->
+            <div class="FeatureScript_Section"  name="question13_uto"
+                DisplayWhen="([ScriptValue: NextFURoutineAptDateTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="NextFURoutineAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- TELEHEALTH -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: TeleHealthOffered] == 'Yes'">
+            <div class="FeatureScript_Text">
+                On what date and time is the earliest available <strong>Telehealth Appointment for subsequent behavioral health services</strong> with any provider?
+            </div>
+
+            <select name="FURoutineTeleHealthResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Telehealth date -->
+            <div class="FeatureScript_Section" name="question13_datetele" DisplayWhen="([ScriptValue: FURoutineTeleHealthResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="FURoutineTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question13_datetele2" DisplayWhen="([ScriptValue: FURoutineTeleHealthResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="FURoutineTeleHealthAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Telehealth UTO -->
+            <div class="FeatureScript_Section"  name="question13_utotele"
+                DisplayWhen="([ScriptValue: FURoutineTeleHealthResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="FURoutineTeleHealthResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Q14 -->
+    <div class="FeatureScript_Section" name="section9" DisplayWhen="([ScriptValue: ScriptStep] == 9 && 
+                ([ScriptValue: NextFURoutineAptDateTimeResponse] != 'Unable to Obtain' && 
+                ([ScriptValue: TeleHealthOffered] == 'No' || [ScriptValue: FURoutineTeleHealthResponse] != 'Unable to Obtain')))">
+        <div class="FeatureScript_Section" name="question14">
+            <div class="FeatureScript_Text">
+                Q 14. Is your office able to assess the urgency of the need for <strong>Psychotropic Medications</strong> immediately?
+            </div>
+
+            <select name="MedicationAssesmentResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+        </div>
+
+    </div>
+
+    <!-- Q15 -->
+    <div class="FeatureScript_Section" name="section10" DisplayWhen="([ScriptValue: ScriptStep] == 10 && [ScriptValue: MedicationAssesmentResponse] != '')">
+        
+        <div class="FeatureScript_Section" name="question15">
+        
+            <div class="FeatureScript_Text">
+                Q 15. Are you able to provide an appointment within 30 calendar days for members needing psychotropic medications?
+            </div>
+
+            <select name="MedicationAptResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        
+        </div>
+
+    </div>
+
+    <!-- Q15a -->
+    <div class="FeatureScript_Section" name="section10.1" DisplayWhen="([ScriptValue: MedicationAptResponse] == 'Yes')">
+        <div class="FeatureScript_Section" name="question15a">
+            <div class="FeatureScript_Text">
+                Q 15a. On what date and time is the earliest available in person appointment with a practitioner that can prescribe medication?
+            </div>
+
+            <select name="MedicationAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Q15a.1 Date entry -->
+            <div class="FeatureScript_Section" name="question15a_date" DisplayWhen="([ScriptValue: MedicationAptDateTimeResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="MedicationAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question15a_date2" DisplayWhen="([ScriptValue: MedicationAptDateTimeResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="MedicationAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Q15a - UTO -->
+            <div class="FeatureScript_Section"  name="question15a_uto"
+                DisplayWhen="([ScriptValue: MedicationAptDateTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="MedicationAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- TELEHEALTH -->
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: TeleHealthOffered] == 'Yes'">
+            <div class="FeatureScript_Text">
+                On what date and time is the earliest available <strong>Telehealth Appointment</strong> with a practitioner that can prescribe medication?
+            </div>
+
+            <select name="MedicationTeleAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Telehealth date -->
+            <div class="FeatureScript_Section" name="question15a_datetele" DisplayWhen="([ScriptValue: MedicationTeleAptDateTimeResponse] == 'Specific Date And Time')">
+                <input type="datetime-local" name="MedicationTeleAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <div class="FeatureScript_Section" name="question15a_datetele2" DisplayWhen="([ScriptValue: MedicationTeleAptDateTimeResponse] == 'Patient will be a walk-in')">
+                <font color="maroon"><b>INSTRUCTION:</b> Set Time to 5pm today.</font>
+                <br>
+                <input type="datetime-local" name="MedicationTeleAptDateTime" class="FeatureScript_Input" required>
+            </div>
+
+            <!-- Telehealth UTO -->
+            <div class="FeatureScript_Section"  name="question15a_utotele"
+                DisplayWhen="([ScriptValue: MedicationTeleAptDateTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="MedicationTeleAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Depends on Doctor's schedule</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>    
+  
+    <!-- Q16 -->
+    <div class="FeatureScript_Section" name="section11" DisplayWhen="([ScriptValue: ScriptStep] == 11 && 
+                        ([ScriptValue: MedicationAptDateTimeResponse] != 'Unable to Obtain' && 
+                        ([ScriptValue: TeleHealthOffered] == 'No' || [ScriptValue: MedicationTeleAptDateTimeResponse] != 'Unable to Obtain')))">
+        
+        <div class="FeatureScript_Section" name="question16">        
+            <div class="FeatureScript_Text">
+                Q 16. What is the average wait time for a patient to be seen?
+            </div>
+
+            <select name="AverageWaitTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="0-15 minutes">0-15 minutes</option>
+                <option value="16-30 minutes">16-30 minutes</option>
+                <option value="31+ minutes">31+ minutes</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+
+            <!-- Q16 - UTO -->
+            <div class="FeatureScript_Section"  name="question16_uto"
+                DisplayWhen="([ScriptValue: AverageWaitTimeResponse] == 'Unable to Obtain')">
+
+                <span style="color:red;">* Select the option that best represents why the office was unable to provide a response to the question.</span><br>
+
+                <select name="AverageWaitTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="0-15 minutes" hidden>0-15 minutes</option>
+                    <option value="16-30 minutes" hidden>16-30 minutes</option>
+                    <option value="31+ minutes" hidden>31+ minutes</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Unable to Obtain - Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Unable to Obtain - Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Unable to Obtain - Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Unable to Obtain - Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Unable to Obtain - Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Unable to Obtain - Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Unable to Obtain - Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Unable to Obtain - Depends on Doctor's schedule</option>                    
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+    
+    <!-- CLOSING -->
+    <div class="FeatureScript_Section" name="close" DisplayWhen="[ScriptValue: ParticipatingProvider] == 'No' ||
+                                                                 [ScriptValue: ParticipatingProvider] == 'Do not Read/Not able to ascertain' ||
+                                                                 [ScriptValue: ProviderNewPhoneAnswer] == 'No' ||
+                                                                 [ScriptValue: CorrectSegmentation] == 'No' ||
+                                                                 [ScriptValue: AverageWaitTimeResponse] != '' && [ScriptValue: AverageWaitTimeResponse] != 'Unable to Obtain'">
+
+        <div class="FeatureScript_Text">
+            <span style="color: red; font-weight: bold;">
+                ** This completes the audit. Thank you for your time, and have a great day! **
+            </span>
+        </div>
+
+    </div>    
+
+</div>
+
+
+NextUrgentAptDateTimeResponseResult = ([ScriptValue: NextUrgentAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextUrgentAptDateTime], hours) <= 24),
+NextUrgentAptDateTimeResponseResultIncomplete = ([ScriptValue: NextUrgentAptDateTime] == ''),
+NextUrgentAptDateTimeResponseResultNCQA = ([ScriptValue: NextUrgentAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextUrgentAptDateTime], hours) <= 48),
+NextUrgentAptDateTimeResponseResultNCQAIncomplete = ([ScriptValue: NextUrgentAptDateTime] == ''),
+UrgentTeleHealthResponseResult = ([ScriptValue: UrgentTeleHealthAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: UrgentTeleHealthAptDateTime], hours) <= 24),
+UrgentTeleHealthResponseResultIncomplete = ([ScriptValue: UrgentTeleHealthAptDateTime] == ''),
+UrgentTeleHealthResponseResultNCQA = ([ScriptValue: UrgentTeleHealthAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: UrgentTeleHealthAptDateTime], hours) <= 48),
+UrgentTeleHealthResponseResultNCQAIncomplete = ([ScriptValue: UrgentTeleHealthAptDateTime] == ''),
+NextRoutineAptDateTimeResponseResult = ([ScriptValue: NextRoutineAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextRoutineAptDateTime], days) <= 7),
+NextRoutineAptDateTimeResponseResultIncomplete = ([ScriptValue: NextRoutineAptDateTime] == ''),
+NextRoutineAptDateTimeResponseResultNCQA = ([ScriptValue: NextRoutineAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextRoutineAptDateTime], days) <= 14),
+NextRoutineAptDateTimeResponseResultNCQAIncomplete = ([ScriptValue: NextRoutineAptDateTime] == ''),
+RoutineTeleHealthResponseResult = ([ScriptValue: RoutineTeleHealthAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: RoutineTeleHealthAptDateTime], days) <= 7),
+RoutineTeleHealthResponseResultIncomplete = ([ScriptValue: RoutineTeleHealthAptDateTime] == ''),
+RoutineTeleHealthResponseResultNCQA = ([ScriptValue: RoutineTeleHealthAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: RoutineTeleHealthAptDateTime], days) <= 14),
+RoutineTeleHealthResponseResultNCQAIncomplete = ([ScriptValue: RoutineTeleHealthAptDateTime] == ''),
+InitialAdultAssesmentAptDateTimeResponseResult = ([ScriptValue: InitialAdultAssesmentAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: InitialAdultAssesmentAptDateTime], days) <= 23),
+InitialAdultAssesmentAptDateTimeResponseResultIncomplete = ([ScriptValue: InitialAdultAssesmentAptDateTime] == ''),
+InitialAdultAssesmentTeleAptDateTimeResponseResult = ([ScriptValue: InitialAdultAssesmentTeleAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: InitialAdultAssesmentTeleAptDateTime], days) <= 23),
+InitialAdultAssesmentTeleAptDateTimeResponseResultIncomplete = ([ScriptValue: InitialAdultAssesmentTeleAptDateTime] == ''),
+InitialMinorAssesmentAptDateTimeResponseResult = ([ScriptValue: InitialMinorAssesmentAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: InitialMinorAssesmentAptDateTime], days) <= 21),
+InitialMinorAssesmentAptDateTimeResponseResultIncomplete = ([ScriptValue: InitialMinorAssesmentAptDateTime] == ''),
+InitialMinorAssesmentTeleAptDateTimeResponseResult = ([ScriptValue: InitialMinorAssesmentTeleAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: InitialMinorAssesmentTeleAptDateTime], days) <= 21),
+InitialMinorAssesmentTeleAptDateTimeResponseResultIncomplete = ([ScriptValue: InitialMinorAssesmentTeleAptDateTime] == ''),
+NextPsychAptDateTimeResponseResult = ([ScriptValue: NextPsychAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextPsychAptDateTime], hours) <= 6),
+NextPsychAptDateTimeResponseResultIncomplete = ([ScriptValue: NextPsychAptDateTime] == ''),
+NextPsychAptDateTimeResponseResultNCQA = ([ScriptValue: NextPsychAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextPsychAptDateTime], hours) <= 6),
+NextPsychAptDateTimeResponseResultNCQAIncomplete = ([ScriptValue: NextPsychAptDateTime] == ''),
+PsychTeleHealthResponseResult = ([ScriptValue: PsychTeleHealthAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: PsychTeleHealthAptDateTime], hours) <= 6),
+PsychTeleHealthResponseResultIncomplete = ([ScriptValue: PsychTeleHealthAptDateTime] == ''),
+PsychTeleHealthResponseResultNCQA = ([ScriptValue: PsychTeleHealthAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: PsychTeleHealthAptDateTime], hours) <= 6),
+PsychTeleHealthResponseResultNCQAIncomplete = ([ScriptValue: PsychTeleHealthAptDateTime] == ''),
+SubsequentBehavioralHealthServicesAptDateTimeResult = ([ScriptValue: SubsequentBehavioralHealthServicesAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: SubsequentBehavioralHealthServicesAptDateTime], days) <= 45),
+SubsequentBehavioralHealthServicesAptDateTimeResultIncomplete = ([ScriptValue: SubsequentBehavioralHealthServicesAptDateTime] == ''),
+SubsequentBehavioralTeleHealthAptDateTimeResult = ([ScriptValue: SubsequentBehavioralTeleHealthAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: SubsequentBehavioralTeleHealthAptDateTime], days) <= 45),
+SubsequentBehavioralTeleHealthAptDateTimeResultIncomplete = ([ScriptValue: SubsequentBehavioralTeleHealthAptDateTime] == ''),
+NextFURoutineAptDateTimeResponseResult = ([ScriptValue: NextFURoutineAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextFURoutineAptDateTime], days) <= 14),
+NextFURoutineAptDateTimeResponseResultIncomplete = ([ScriptValue: NextFURoutineAptDateTime] == ''),
+FURoutineTeleHealthResponseResult = ([ScriptValue: FURoutineTeleHealthAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: FURoutineTeleHealthAptDateTime], days) <= 14),
+FURoutineTeleHealthResponseResultIncomplete = ([ScriptValue: FURoutineTeleHealthAptDateTime] == ''),
+MedicationAptDateTimeResponseResult = ([ScriptValue: MedicationAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: MedicationAptDateTime], days) <= 30),
+MedicationAptDateTimeResponseResultIncomplete = ([ScriptValue: MedicationAptDateTime] == ''),
+MedicationTeleAptDateTimeResponseResult = ([ScriptValue: MedicationTeleAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: MedicationTeleAptDateTime], days) <= 30),
+MedicationTeleAptDateTimeResponseResultIncomplete = ([ScriptValue: MedicationTeleAptDateTime] == ''),
+AverageWaitTime = ([ScriptValue: AverageWaitTimeResponse] == '0-15 minutes' && [ScriptValue: AverageWaitTimeResponse] == '16-30 minutes' && [ScriptValue: AverageWaitTimeResponse] == '31+ minutes'),
+AverageWaitTimeIncomplete = ([ScriptValue: AverageWaitTimeResponse] != '0-15 minutes' && [ScriptValue: AverageWaitTimeResponse] != '16-30 minutes' && [ScriptValue: AverageWaitTimeResponse] != '31+ minutes')
+
+

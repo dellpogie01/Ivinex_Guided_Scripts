@@ -1,0 +1,188 @@
+<div class="FeatureScript_Page" name="Kansas_AccessAvailability_AH_Medicaid">
+
+    <div class="FeatureScript_Section" name="LivePerson">
+        <div class="FeatureScript_Text">
+            Start - Did a live person answer?
+            <select class="FeatureScript_Input" name="AHLiveAnswer">
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="FeatureScript_Section" name="LivePersonYes" DisplayWhen="([ScriptValue: AHLiveAnswer] == 'Yes')">
+        <div class="FeatureScript_Section" name="Introduction">
+            <div class="FeatureScript_Text">
+                Hi, my name is <span style="font-weight: bold;">[User: alias]</span>.  I am calling on behalf of <span style="font-weight: bold;">[Field: company_name]</span> on a recorded line 
+                for training and quality assurance reasons to conduct a Required Audit of your office's availability of an on-call  physician for members who may need afterhours care.   
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="Question1">
+            <div class="FeatureScript_Text">
+                Q 1 - Is this the office or answering service at <span style="font-weight: bold;">[Field: practice_name]</span>?
+                <select class="FeatureScript_Input" name="CorrectOffice">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <br><br>
+                <div class="FeatureScript_Section" name="Question2.1" DisplayWhen="([ScriptValue: CorrectOffice] == 'No')">
+                    <span style='color: red; font-weight: bold;'>* Go to Close *</span>
+                </div>                
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="Question2" DisplayWhen="([ScriptValue: CorrectOffice] == 'Yes')">
+            <div class="FeatureScript_Text">
+                Q 2 - May I ask who I am speaking with?
+                <select class="FeatureScript_Input" name="CallerNameAnswer">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <br><br>
+                <div class="FeatureScript_Section" name="Question2.1" DisplayWhen="([ScriptValue: CallerNameAnswer] == 'Yes')">
+                    <span style='color: black; font-weight: bold;'>* If Yes - Enter Name</span>
+                    <input type="text" name="CallerName" class="FeatureScript_Input">
+                </div>
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="Question3"  DisplayWhen="([ScriptValue: CallerNameAnswer] == 'No' || [ScriptValue: CallerName] != '')">
+            <div class="FeatureScript_Text">
+                Q 3 - If a member must access their provider after office hours, are you <strong>a triage/nurse/crisis line</strong> or able to reach the provider, an on-call physician or nurse with access to the provider for the member?
+                <br>
+                <select class="FeatureScript_Input" name="AHAccessibilityResponse">
+                    <option value=""></option>
+                    <option value="Yes - answering service">Yes - answering service</option>
+                    <option value="A triage/nurse/crisis line with or without access to the provider, PCP, or on-call physician">A triage/nurse/crisis line with or without access to the provider, PCP, or on-call physician</option>
+                    <option value="Yes - intended/on-call provider">Yes - intended/on-call provider</option>
+                    <option value="Asked to leave message with contact number for call back OR answering service give message with contact number of provider for member to call">Asked to leave message with contact number for call back OR answering service give message with contact number of provider for member to call</option>
+                    <option value="Answering service unable to reach provider or on-call physician">Answering service unable to reach provider or on-call physician</option>
+                    <option value="Recommends calling during business hours to complete the audit">Recommends calling during business hours to complete the audit</option>
+                    <option value="Recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician">Recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician</option>
+                    <option value="Refer to Patient Portal">Refer to Patient Portal</option>
+                    <option value="Other">Other</option>
+                    <option value="Answering machine with option to page physician" hidden>Answering machine with option to page physician</option>
+                    <option value="Answering machine provides number to access physician live or answering service" hidden>Answering machine provides number to access physician live or answering service</option>
+                    <option value="Answering machine pages provider once message is left" hidden>Answering machine pages provider once message is left</option>
+                    <option value="Please hold or Press # for Physician Exchange" hidden>Please hold or Press # for Physician Exchange</option>
+                    <option value="Outgoing message states a call back will be received within 30 minutes for urgent calls or 24 hours for non-urgent calls" hidden>Outgoing message states a call back will be received within 30 minutes for urgent calls or 24 hours for non-urgent calls</option>
+                    <option value="Please hold or Press # for answering service" hidden>Please hold or Press # for answering service</option>
+                    <option value="An answering machine that only takes a message" hidden>An answering machine that only takes a message</option>
+                    <option value="Answering machine message only recommends calling back during business hours" hidden>Answering machine message only recommends calling back during business hours</option>
+                    <option value="Answering machine recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician." hidden>Answering machine recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician.</option>
+                    <option value="Other" hidden>Other</option>
+                </select>
+                <br><br>
+
+                <div class="FeatureScript_Section" name="DispoPassed" DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Yes - answering service' || 
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'A triage/nurse/crisis line with or without access to the provider, PCP, or on-call physician' ||
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Yes - intended/on-call provider' ||
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Asked to leave message with contact number for call back OR answering service give message with contact number of provider for member to call')">
+                    <span style='color: red; font-weight: bold;'>* End Call - Dispo as Passed *</span>
+                </div>
+
+                <div class="FeatureScript_Section" name="DispoPassed" DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit')">
+                    <span style='color: red; font-weight: bold;'>** If person gives this response, restate this is a required audit for after-hours availability and there is just one question. Reask question. **
+                        <br><br>** If person continues to say call during business hours — End Call - Dispo as failed **</span>
+                </div>
+
+                <div class="FeatureScript_Section" name="DispoFailed" DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Answering service unable to reach provider or on-call physician' || 
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' || 
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician' ||
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' || 
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Refer to Patient Portal' ||
+                                                                                    [ScriptValue: AHAccessibilityResponse] == 'Other')">
+                    <span style='color: red; font-weight: bold;'>* End Call - Dispo as Failed *</span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="FeatureScript_Section" name="LivePersonNo" DisplayWhen="([ScriptValue: AHLiveAnswer] == 'No')">
+        <div class="FeatureScript_Text">
+             Q 4 - If you reach an ANSWERING MACHINE/SYSTEM - LISTEN to the entire message and confirm the outgoing message pertains to a doctor included in the survey. 
+             Document one of the following dispositions once the entire message is heard.
+            <br><br>
+            PROVIDERS AT THIS NUMBER ARE:
+            <br>
+            [Field: first_name] [Field: last_name]
+            <br><br>
+            <select class="FeatureScript_Input" name="AHAccessibilityResponse">
+                <option value=""></option>
+                <option value="Yes - answering service" hidden>Yes - answering service</option>
+                <option value="A triage/nurse/crisis line with or without access to the provider, PCP, or on-call physician" hidden>A triage/nurse/crisis line with or without access to the provider, PCP, or on-call physician</option>
+                <option value="Yes - intended/on-call provider" hidden>Yes - intended/on-call provider</option>
+                <option value="Asked to leave message with contact number for call back OR answering service give message with contact number of provider for member to call" hidden>Asked to leave message with contact number for call back OR answering service give message with contact number of provider for member to call</option>
+                <option value="Answering service unable to reach provider or on-call physician" hidden>Answering service unable to reach provider or on-call physician</option>
+                <option value="Recommends calling during business hours to complete the audit" hidden>Recommends calling during business hours to complete the audit</option>
+                <option value="Recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician" hidden>Recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician</option>
+                <option value="Refer to Patient Portal" hidden>Refer to Patient Portal</option>
+                <option value="Other" hidden>Other</option>
+                <option value="Answering machine with option to page physician">Answering machine with option to page physician</option>
+                <option value="Answering machine provides number to access physician live or answering service">Answering machine provides number to access physician live or answering service</option>
+                <option value="Answering machine pages provider once message is left">Answering machine pages provider once message is left</option>
+                <option value="Please hold or Press # for Physician Exchange">Please hold or Press # for Physician Exchange</option>
+                <option value="Outgoing message states a call back will be received within 30 minutes for urgent calls or 24 hours for non-urgent calls">Outgoing message states a call back will be received within 30 minutes for urgent calls or 24 hours for non-urgent calls</option>
+                <option value="Please hold or Press # for answering service">Please hold or Press # for answering service</option>
+                <option value="An answering machine that only takes a message">An answering machine that only takes a message</option>
+                <option value="Answering machine message only recommends calling back during business hours">Answering machine message only recommends calling back during business hours</option>
+                <option value="Answering machine recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician.">Answering machine recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician.</option>
+                <option value="Other">Other</option>
+            </select>
+            <br><br>
+
+            <div class="FeatureScript_Section" name="DispoRecNumber" DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Answering machine provides number to access physician live or answering service')">
+                <strong>** Record Number </strong>
+                <input type="text" name="ProviderNewPhone" class="FeatureScript_Input"><strong> **</strong>
+                <br><br><br><br>
+            </div>
+
+            <div class="FeatureScript_Section" name="ChangeToLive" DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Please hold or Press # for answering service')">
+                <span style='color: red; font-weight: bold;'>** Change Start to - 'Yes' **<br><br>** Go to Q-1 **</span>
+            </div>
+
+            <div class="FeatureScript_Section" name="DispoPassed2" 
+                DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'Answering machine with option to page physician' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Answering machine provides number to access physician live or answering service' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Answering machine pages provider once message is left' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Please hold or Press # for Physician Exchange' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Outgoing message states a call back will be received within 30 minutes for urgent calls or 24 hours for non-urgent calls')">
+                <span style='color: red; font-weight: bold;'>* Dispo as Passed *</span>
+            </div>
+
+            <div class="FeatureScript_Section" name="DispoFailed2" 
+                DisplayWhen="([ScriptValue: AHAccessibilityResponse] == 'An answering machine that only takes a message' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Answering machine message only recommends calling back during business hours' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Answering machine recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician.' || 
+                              [ScriptValue: AHAccessibilityResponse] == 'Other')">
+                <span style='color: red; font-weight: bold;'>* Dispo as Failed *</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="FeatureScript_Section" name="Closing" DisplayWhen="(([ScriptValue: AHAccessibilityResponse] != '' && [ScriptValue: AHAccessibilityResponse] != 'Please hold or Press # for answering service') || [ScriptValue: CorrectOffice] == 'No')">
+        <div class="FeatureScript_Text">
+            <span style="color: red; font-weight: bold;">
+                ** This completes the audit. Thank you for your time, and have a great day! **
+            </span>
+        </div>
+
+    </div>    
+
+</div>
+
+
+AHAccessibilityResponseResult = ([ScriptValue: AHAccessibilityResponse] == 'Yes - answering service' && [ScriptValue: AHAccessibilityResponse] == 'A triage/nurse/crisis line with or without access to the provider, PCP, or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Yes - intended/on-call provider' && [ScriptValue: AHAccessibilityResponse] == 'Asked to leave message with contact number for call back OR answering service give message with contact number of provider for member to call' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine with option to page physician' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine provides number to access physician live or answering service' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine pages provider once message is left' && [ScriptValue: AHAccessibilityResponse] == 'Please hold or Press # for Physician Exchange' && [ScriptValue: AHAccessibilityResponse] == 'Outgoing message states a call back will be received within 30 minutes for urgent calls or 24 hours for non-urgent calls'), 
+AHAccessibilityResponseResultIncomplete = ([ScriptValue: AHAccessibilityResponse] == 'Answering service unable to reach provider or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Refer to Patient Portal' && [ScriptValue: AHAccessibilityResponse] == 'Other' && [ScriptValue: AHAccessibilityResponse] == 'An answering machine that only takes a message' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine message only recommends calling back during business hours' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician.' && [ScriptValue: AHAccessibilityResponse] == 'Other'), 
+AHAccessibilityResponseResultMKT = ([ScriptValue: AHAccessibilityResponse] == 'Yes - answering service' && [ScriptValue: AHAccessibilityResponse] == 'A triage/nurse/crisis line with or without access to the provider, PCP, or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Yes - intended/on-call provider' && [ScriptValue: AHAccessibilityResponse] == 'Asked to leave message with contact number for call back OR answering service give message with contact number of provider for member to call' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine with option to page physician' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine provides number to access physician live or answering service' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine pages provider once message is left' && [ScriptValue: AHAccessibilityResponse] == 'Please hold or Press # for Physician Exchange' && [ScriptValue: AHAccessibilityResponse] == 'Outgoing message states a call back will be received within 30 minutes for urgent calls or 24 hours for non-urgent calls'), 
+AHAccessibilityResponseResultMKTIncomplete = ([ScriptValue: AHAccessibilityResponse] == 'Answering service unable to reach provider or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Refer to Patient Portal' && [ScriptValue: AHAccessibilityResponse] == 'Other' && [ScriptValue: AHAccessibilityResponse] == 'An answering machine that only takes a message' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine message only recommends calling back during business hours' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician.' && [ScriptValue: AHAccessibilityResponse] == 'Other'), 
+AHAccessibilityResponseResultNCQA = ([ScriptValue: AHAccessibilityResponse] == 'Yes - answering service' && [ScriptValue: AHAccessibilityResponse] == 'A triage/nurse/crisis line with or without access to the provider, PCP, or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Yes - intended/on-call provider' && [ScriptValue: AHAccessibilityResponse] == 'Asked to leave message with contact number for call back OR answering service give message with contact number of provider for member to call' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine with option to page physician' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine provides number to access physician live or answering service' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine pages provider once message is left' && [ScriptValue: AHAccessibilityResponse] == 'Please hold or Press # for Physician Exchange' && [ScriptValue: AHAccessibilityResponse] == 'Outgoing message states a call back will be received within 30 minutes for urgent calls or 24 hours for non-urgent calls'), 
+AHAccessibilityResponseResultNCQAIncomplete = ([ScriptValue: AHAccessibilityResponse] == 'Answering service unable to reach provider or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician' && [ScriptValue: AHAccessibilityResponse] == 'Recommends calling during business hours to complete the audit' && [ScriptValue: AHAccessibilityResponse] == 'Refer to Patient Portal' && [ScriptValue: AHAccessibilityResponse] == 'Other' && [ScriptValue: AHAccessibilityResponse] == 'An answering machine that only takes a message' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine message only recommends calling back during business hours' && [ScriptValue: AHAccessibilityResponse] == 'Answering machine recommends going to an urgent care center or emergency room because there is no after hours access to the PCP or on-call physician.' && [ScriptValue: AHAccessibilityResponse] == 'Other')
