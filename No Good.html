@@ -1,0 +1,708 @@
+<div class="FeatureScript_Page" name="DaysTimeSelector" StepButtons="ScriptStep" MaxStepValue=0>
+        <div class="FeatureScript_Section" name="DayOfWeek">
+                <div class="FeatureScript_Text">
+                        <label style="display: inline-flex; align-items: center; gap: 6px;">
+                                <input type="checkbox" name="Mon" class="FeatureScript_Input"><strong>Monday</strong>
+                                <input type="checkbox" name="Tue" class="FeatureScript_Input"><strong>Tuesday</strong>
+                                <input type="checkbox" name="Wed" class="FeatureScript_Input"><strong>Wednesday</strong>
+                                <input type="checkbox" name="Thu" class="FeatureScript_Input"><strong>Thursday</strong>
+                                <input type="checkbox" name="Fri" class="FeatureScript_Input"><strong>Friday</strong>
+                                <input type="checkbox" name="Sat" class="FeatureScript_Input"><strong>Saturday</strong>
+                                <input type="checkbox" name="Sun" class="FeatureScript_Input"><strong>Sunday</strong>
+                        </label>
+                </div>
+        </div>
+        <!-- 1: Mon -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="M" required>
+                </div>
+        </div>
+        <!-- 2: Tue -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="T" required>
+                </div>
+        </div>
+        <!-- 3: Wed -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="W" required>
+                </div>
+        </div>
+        <!-- 4: Thu -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="Th" required>
+                </div>
+        </div>
+        <!-- 5: Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="F" required>
+                </div>
+        </div>
+        <!-- 6: Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="Sa" required>
+                </div>
+        </div>
+        <!-- 7: Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="Su" required>
+                </div>
+        </div>
+        <!-- 8: Mon + Tue -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MT" required>
+                </div>
+        </div>
+        <!-- 9: Mon + Wed -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MW" required>
+                </div>
+        </div>
+        <!-- 10: Mon + Thu -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTh" required>
+                </div>
+        </div>
+        <!-- 11: Mon + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MF" required>
+                </div>
+        </div>
+        <!-- 12: Mon + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MSa" required>
+                </div>
+        </div>
+        <!-- 13: Mon + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MSu" required>
+                </div>
+        </div>
+        <!-- 14: Tue + Wed -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TW" required>
+                </div>
+        </div>
+        <!-- 15: Tue + Thu -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TTh" required>
+                </div>
+        </div>
+        <!-- 16: Tue + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TF" required>
+                </div>
+        </div>
+        <!-- 17: Tue + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TSa" required>
+                </div>
+        </div>
+        <!-- 18: Tue + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TSu" required>
+                </div>
+        </div>
+        <!-- 19: Wed + Thu -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WTh" required>
+                </div>
+        </div>
+        <!-- 20: Wed + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WF" required>
+                </div>
+        </div>
+        <!-- 21: Wed + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WSa" required>
+                </div>
+        </div>
+        <!-- 22: Wed + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WSu" required>
+                </div>
+        </div>
+        <!-- 23: Thu + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="ThF" required>
+                </div>
+        </div>
+        <!-- 24: Thu + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="ThSa" required>
+                </div>
+        </div>
+        <!-- 25: Thu + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="ThSu" required>
+                </div>
+        </div>
+        <!-- 26: Fri + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="FSa" required>
+                </div>
+        </div>
+        <!-- 27: Fri + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="FSu" required>
+                </div>
+        </div>
+        <!-- 28: Sat + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="SaSu" required>
+                </div>
+        </div>
+        <!-- 29: Mon + Tue + Wed -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTW" required>
+                </div>
+        </div>
+        <!-- 30: Mon + Tue + Thu -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTTh" required>
+                </div>
+        </div>
+        <!-- 31: Mon + Tue + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTF" required>
+                </div>
+        </div>
+        <!-- 32: Mon + Tue + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTSa" required>
+                </div>
+        </div>
+        <!-- 33: Mon + Tue + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTSu" required>
+                </div>
+        </div>
+        <!-- 34: Mon + Wed + Thu -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWTh" required>
+                </div>
+        </div>
+        <!-- 35: Mon + Wed + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWF" required>
+                </div>
+        </div>
+        <!-- 36: Mon + Wed + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWSa" required>
+                </div>
+        </div>
+        <!-- 37: Mon + Wed + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWSu" required>
+                </div>
+        </div>
+        <!-- 38: Mon + Thu + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MThF" required>
+                </div>
+        </div>
+        <!-- 39: Mon + Thu + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MThSa" required>
+                </div>
+        </div>
+        <!-- 40: Mon + Thu + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MThSu" required>
+                </div>
+        </div>
+        <!-- 41: Mon + Fri + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MFSa" required>
+                </div>
+        </div>
+        <!-- 42: Mon + Fri + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MFSu" required>
+                </div>
+        </div>
+        <!-- 43: Mon + Sat + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MSaSu" required>
+                </div>
+        </div>
+        <!-- 44: Tue + Wed + Thu -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWTh" required>
+                </div>
+        </div>
+        <!-- 45: Tue + Wed + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected: 
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWF" required>
+                </div>
+        </div>
+        <!-- 46: Tue + Wed + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWSa" required>
+                </div>
+        </div>
+        <!-- 47: Tue + Wed + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWSu" required>
+                </div>
+        </div>
+        <!-- 48: Tue + Thu + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="ThTF" required>
+                </div>
+        </div>
+        <!-- 49: Tue + Thu + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TThSa" required>
+                </div>
+        </div>
+        <!-- 50: Tue + Thu + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TThSu" required>
+                </div>
+        </div>
+        <!-- 51: Tue + Fri + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TFSa" required>
+                </div>
+        </div>
+        <!-- 52: Tue + Fri + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TFSu" required>
+                </div>
+        </div>
+        <!-- 53: Tue + Sat + Sun -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TSaSu" required>
+                </div>
+        </div>
+        <!-- 54: Wed + Thu + Fri -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WThF" required>
+                </div>
+        </div>
+        <!-- 55: Wed + Thu + Sat -->
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+                <div class="FeatureScript_Text">
+                        Day(s) Selected:
+                        <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WThSa" required>
+                </div>
+        </div>
+        <!-- 56: Wed + Thu + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WThSu" required>
+  </div>
+</div>
+
+<!-- 57: Wed + Fri + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WFSa" required>
+  </div>
+</div>
+
+<!-- 58: Wed + Fri + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WFSu" required>
+  </div>
+</div>
+
+<!-- 59: Wed + Sat + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="WSaSu" required>
+  </div>
+</div>
+
+<!-- 60: Thu + Fri + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="ThFSa" required>
+  </div>
+</div>
+
+<!-- 61: Thu + Fri + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="ThFSu" required>
+  </div>
+</div>
+
+<!-- 62: Thu + Sat + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="ThSaSu" required>
+  </div>
+</div>
+
+<!-- 63: Fri + Sat + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="FSaSu" required>
+  </div>
+</div>
+
+<!-- 64: Mon + Tue + Wed + Thu -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTWTh" required>
+  </div>
+</div>
+
+<!-- 65: Mon + Tue + Wed + Fri -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTWF" required>
+  </div>
+</div>
+
+<!-- 66: Mon + Tue + Wed + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTWSa" required>
+  </div>
+</div>
+
+<!-- 67: Mon + Tue + Wed + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTWSu" required>
+  </div>
+</div>
+
+<!-- 68: Mon + Tue + Thu + Fri -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTThF" required>
+  </div>
+</div>
+
+<!-- 69: Mon + Tue + Thu + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTThSa" required>
+  </div>
+</div>
+
+<!-- 70: Mon + Tue + Thu + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTThSu" required>
+  </div>
+</div>
+
+<!-- 71: Mon + Tue + Fri + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTFSa" required>
+  </div>
+</div>
+
+<!-- 72: Mon + Tue + Fri + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTFSu" required>
+  </div>
+</div>
+
+<!-- 73: Mon + Tue + Sat + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MTSaSu" required>
+  </div>
+</div>
+
+<!-- 74: Mon + Wed + Thu + Fri -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWThF" required>
+  </div>
+</div>
+
+<!-- 75: Mon + Wed + Thu + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWThSa" required>
+</div>
+</div>
+
+<!-- 76: Mon + Wed + Thu + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWThSu" required>
+  </div>
+</div>
+
+<!-- 77: Mon + Wed + Fri + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWFSa" required>
+  </div>
+</div>
+
+<!-- 78: Mon + Wed + Fri + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWFSu" required>
+  </div>
+</div>
+
+<!-- 79: Mon + Wed + Sat + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MWSaSu" required>
+  </div>
+</div>
+
+<!-- 80: Mon + Thu + Fri + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MThFSa" required>
+  </div>
+</div>
+
+<!-- 81: Mon + Thu + Fri + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MThFSu" required>
+  </div>
+</div>
+
+<!-- 82: Mon + Thu + Sat + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MThSaSu" required>
+  </div>
+</div>
+
+<!-- 83: Mon + Fri + Sat + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == true && [ScriptValue: Tue] == false && [ScriptValue: Wed] == false && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="MFSaSu" required>
+  </div>
+</div>
+
+<!-- 84: Tue + Wed + Thu + Fri -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWThF" required>
+  </div>
+</div>
+
+<!-- 85: Tue + Wed + Thu + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWThSa" required>
+  </div>
+</div>
+
+<!-- 86: Tue + Wed + Thu + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == true && [ScriptValue: Fri] == false && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWThSu" required>
+  </div>
+</div>
+
+<!-- 87: Tue + Wed + Fri + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWFSa" required>
+  </div>
+</div>
+
+<!-- 88: Tue + Wed + Fri + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == true && [ScriptValue: Sat] == false && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWFSu" required>
+  </div>
+</div>
+
+<!-- 89: Tue + Wed + Sat + Sun -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == true && [ScriptValue: Thu] == false && [ScriptValue: Fri] == false && [ScriptValue: Sat] == true && [ScriptValue: Sun] == true)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input" value="TWSaSu" required>
+  </div>
+</div>
+
+<!-- 90: Tue + Thu + Fri + Sat -->
+<div class="FeatureScript_Section" DisplayWhen="([ScriptValue: Mon] == false && [ScriptValue: Tue] == true && [ScriptValue: Wed] == false && [ScriptValue: Thu] == true && [ScriptValue: Fri] == true && [ScriptValue: Sat] == true && [ScriptValue: Sun] == false)">
+  <div class="FeatureScript_Text">
+    Day(s) Selected:
+    <input type="text" name="DaysSelected" class="FeatureScript_Input"
+  </div>
+</div>
+
+
+
+    <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: ScriptStep] == 0)">
+                <div class="FeatureScript_Text">
+                        <strong>Start Time:</strong><input type="time" id="StartTime" name="StartTime">
+                        <strong>End Time:</strong><input type="time" id="EndTime" name="EndTime">
+                </div>
+        </div>
+
+</div>
+
+
+
+
+        <div class="FeatureScript_Section" DisplayWhen="([ScriptValue: ScriptStep] == 0)">
+                <div class="FeatureScript_Text">
+                        <strong>Start Time:</strong><input type="time" id="StartTime" name="StartTime">
+                        <strong>End Time:</strong><input type="time" id="EndTime" name="EndTime">
+                </div>
+        </div>
+</div>
+
+
+    <!--Display Selected Days-->
+    <div class="FeatureScript_Section" name="SelectedDays">
+        <div class="FeatureScript_Text">
+            [ScriptValue: DaysSelected]
+        </div>
+    </div>

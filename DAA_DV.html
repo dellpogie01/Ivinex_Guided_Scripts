@@ -1,0 +1,974 @@
+Script Accuracy Audit with Mapping Updates - (Ever) 07.16.2026
+
+<div class="FeatureScript_Page" name="Dental_Vision" StepButtons="ScriptStep" MaxStepValue="5">
+
+    <!--Introduction Script-->
+    <div class="FeatureScript_Section" name="Introduction">
+        <div class="FeatureScript_Text">
+            Hello, my name is <strong>[User: first_name]</strong> I am calling from <strong>[Field: cc_script_name]</strong> <span style="color: Red;">on a recorded line</span> to verify the directory information we have for <strong>[Field: first_name] [Field: last_name]</strong>. May I have your name?
+            <br><br>
+            <strong>For Automated Systems:</strong> PLEASE LISTEN TO THE MENU PROMPTS AND CAREFULLY CHOOSE THE CORRECT ONE TO GET TO THE APPOINTMENT LINE, DOCTOR'S OFFICE, ETC.
+            <br><br>
+            <span style="color: red; font-weight: bold;">Enter Name of Rep if Provided: </span> 
+            <input type="text" name="Name_Of_Provider_Rep" class="FeatureScript_Input">       
+        </div>
+    </div>
+
+    <!-- Q-1 -->
+    <div class="FeatureScript_Section" name="Q1" DisplayWhen="([ScriptValue: ScriptStep] == 0)">
+        <div class="FeatureScript_Text">
+            Q 1. Does <strong>[Field: first_name] [Field: last_name]</strong> see patients at <strong>[Field: address] [Field: address_2] [Field: city], [Field: state] [Field: zip_code]</strong>?
+        </div>
+
+        <select name="Practitioner_At_This_Location" class="FeatureScript_Input" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <div class="FeatureScript_Section" name="Q1_YesSuiteNumber" DisplayWhen="([ScriptValue: Practitioner_At_This_Location] == 'Yes')">
+            <span style="color: Red;">Select if Suite Number is correct:</span>
+            <br>
+            <select name="Suite_Number_Correct" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1_Comment" 
+            DisplayWhen="([ScriptValue: Practitioner_At_This_Location] == 'Yes' && [ScriptValue: Suite_Number_Correct] != '')
+                        || ([ScriptValue: Practitioner_At_This_Location] == 'No')
+            ">
+            <span style="color: red; font-weight: bold;">Notate Reason in Comment Box (REQUIRED)</span>
+            <br>
+            <textarea name="Comment_Q1" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1_CommentHelerYes" DisplayWhen="([ScriptValue: Practitioner_At_This_Location] == 'Yes' && [ScriptValue: Suite_Number_Correct] == 'Yes')">
+            <span 
+                onclick="navigator.clipboard.writeText('Rep was able to confirm that the address is still the same.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Rep was able to confirm that the address is still the same.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1_CommentHelerYes_SuiteChanged" DisplayWhen="([ScriptValue: Practitioner_At_This_Location] == 'Yes' && [ScriptValue: Suite_Number_Correct] == 'No')">
+            <span 
+                onclick="navigator.clipboard.writeText('Rep was able to confirm that the address is correct, except for the Suite Number, (Correct Suite Number).')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Rep was able to confirm that the address is correct, except for the Suite Number, (Correct Suite Number).
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1_CommentHelerNo" DisplayWhen="([ScriptValue: Practitioner_At_This_Location] == 'No')">
+            <span 
+                onclick="navigator.clipboard.writeText('Rep mentioned provider moved to new location.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - Rep mentioned provider moved to new location.
+        </div>
+
+    </div>
+
+    <!-- Q-1a -->
+    <div class="FeatureScript_Section" name="Q1a" DisplayWhen="([ScriptValue: Practitioner_At_This_Location] == 'No' && ([ScriptValue: ScriptStep] == 1))">
+        <div class="FeatureScript_Text">
+            Q 1a. Are you able to tell me if they are at a different location, retired, or at a different group?
+        </div>
+
+        <select name="Practitioner_Not_At_Location_Reason" class="FeatureScript_Input" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="Not at THIS Location" hidden>Not at THIS Location</option>
+            <option value="Retired" hidden>Retired</option>
+            <option value="Deceased" hidden>Deceased</option>
+            <option value="No Longer with Group" hidden>No Longer with Group</option>
+        </select>
+
+        <div class="FeatureScript_Section" name="1a_reason"
+                DisplayWhen="([ScriptValue: Practitioner_Not_At_Location_Reason] != ''
+                && [ScriptValue: Practitioner_Not_At_Location_Reason] != 'No'
+                )">
+            <span style="color: Red;">Select a Reason:</span>
+            <br>
+            <select name="Practitioner_Not_At_Location_Reason" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes" hidden></option>
+                <option value="No" hidden></option>
+                <option value="Not at THIS Location">Not at THIS Location</option>
+                <option value="Retired">Retired</option>
+                <option value="Deceased">Deceased</option>
+                <option value="No Longer with Group">No Longer with Group</option>
+            </select>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_CorrectAddressAnswer" DisplayWhen="([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Not at THIS Location')">
+            Is the address previously stated correct?
+            <br>
+            <span style="font-style: italic; font-weight: bold;">[Field: address] [Field: address_2] [Field: city], [Field: state] [Field: zip_code]</span>
+            <br>
+            <select name="Prac_Address_Correct" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_CorrectAddress" DisplayWhen="([ScriptValue: Prac_Address_Correct] == 'No')">
+            <div class="FeatureScript_Text">
+                <div style="color:red; font-weight:bold; margin-bottom:10px;">
+                    Request corrected address (if applicable):
+                </div>
+
+                <div style="margin-bottom:8px;">
+                    <strong>Correct Address:</strong><br>
+                    <input type="text" name="Correct_Prac_Address1" class="FeatureScript_Input" required style="width:250px;">
+                </div>
+
+                <div style="margin-bottom:8px;">
+                    <strong>Suite Correct:</strong><br>
+                    <select name="Suite_Number_Correct" class="FeatureScript_Input" required>
+                        <option value=""></option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom:8px;">
+                    <strong>Correct Address 2:</strong><br>
+                    <input type="text" name="Correct_Prac_Address2" class="FeatureScript_Input" required style="width:250px;">
+                </div>
+
+                <div style="margin-bottom:8px;">
+                    <strong>Correct City:</strong><br>
+                    <input type="text" name="Correct_City" class="FeatureScript_Input" required style="width:200px;">
+                </div>
+
+                <div style="margin-bottom:8px;">
+                    <strong>Correct State:</strong><br>
+                    <input type="text" name="Correct_State" class="FeatureScript_Input" required style="width:80px;">
+                </div>
+
+                <div>
+                    <strong>Correct Zip:</strong><br>
+                    <input type="text" name="Correct_Zip" class="FeatureScript_Input" required style="width:120px;">
+                </div>
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_Comment" 
+            DisplayWhen="([ScriptValue: Practitioner_Not_At_Location_Reason] != '' 
+                        && [ScriptValue: Practitioner_Not_At_Location_Reason] != 'Yes'
+                        && [ScriptValue: Practitioner_Not_At_Location_Reason] != 'Not at THIS Location')
+                        || ([ScriptValue: Prac_Address_Correct] != '')
+                        ">
+            <span style="color: red; font-weight: bold;">Notate Reason in Comment Box (REQUIRED)</span>
+            <br>
+            <textarea name="Comment_Q1a" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_CommentHelerNo" DisplayWhen="([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No')">
+            <span 
+                onclick="navigator.clipboard.writeText('No additional info provided.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - No additional info provided.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_CommentHelerNot_at_THIS_Location" DisplayWhen="([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Not at THIS Location')">
+            <span 
+                onclick="navigator.clipboard.writeText('Provider moved to different location (new address if provided).')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - Provider moved to different location (new address if provided).
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_CommentHelerRetired" DisplayWhen="([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired')">
+            <span 
+                onclick="navigator.clipboard.writeText('Rep (Name) mentioned that the provider is retired and no longer practicing.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Rep (Name) mentioned that the provider is retired and no longer practicing.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_CommentHelerDeceased" DisplayWhen="([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased')">
+            <span 
+                onclick="navigator.clipboard.writeText('Rep (Name) mentioned that the provider is deceased and no longer in practice.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Rep (Name) mentioned that the provider is deceased and no longer in practice.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_CommentHelerNo_Longer_with_Group" DisplayWhen="([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group')">
+            <span 
+                onclick="navigator.clipboard.writeText('Rep (Name) advised that the provider is no longer associated with their group.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Rep (Name) advised that the provider is no longer associated with their group.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q1a_Close" 
+                DisplayWhen="
+                (
+                [ScriptValue: Prac_Address_Correct] != '' 
+                || [ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' 
+                || [ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' 
+                || [ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' 
+                || [ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' 
+                )
+                && [ScriptValue: Comment_Q1a] != ''
+                ">
+
+            <span style="color: Red;">Politely End Call</span>
+        </div>
+
+    </div>
+
+    <!-- Q-2 -->
+    <div class="FeatureScript_Section" name="Q2" DisplayWhen="([ScriptValue: Practitioner_At_This_Location] == 'Yes' && ([ScriptValue: ScriptStep] == 1))">
+        <div class="FeatureScript_Text">
+            Q 2. Is this the right line to be able to make an appointment with <strong>[Field: first_name] [Field: last_name]</strong> at this location?
+        </div>
+
+        <select name="Prac_Phone_Correct" class="FeatureScript_Input" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <div class="FeatureScript_Section" name="Q2_CorrectPhone" DisplayWhen="([ScriptValue: Prac_Phone_Correct] == 'No')">
+            <span style="color: Red; font-weight: bold;">Request correct phone number and enter (if applicable): 
+            <input type="text" name="Correct_Phone_Nbr" class="FeatureScript_Input">
+            <br>Ask office to transfer once correct phone number is obtained so remaining questions can be validated.</span>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q2_Comment" DisplayWhen="([ScriptValue: Prac_Phone_Correct] != '')">
+            <span style="color: red; font-weight: bold;">Notate Reason in Comment Box (REQUIRED)</span>
+            <br>
+            <textarea name="Comment_Q2" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q2_CommentHelerYes" DisplayWhen="([ScriptValue: Prac_Phone_Correct] == 'Yes')">
+            <span 
+                onclick="navigator.clipboard.writeText('Confirmed this is the right line to make an appointment.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Confirmed this is the right line to make an appointment.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q2_CommentHelerNo" DisplayWhen="([ScriptValue: Prac_Phone_Correct] == 'No')">
+            <span 
+                onclick="navigator.clipboard.writeText('Not the right line for appointment (put correct phone number if provided).')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - Not the right line for appointment (put correct phone number if provided).
+        </div>
+
+    </div>
+
+    <!-- Scenario #3 -->
+    <!-- Central Appointment Lines/Switchboard - if the office transfers you and you get a line that drops, 
+         the call goes unanswered or you get a voicemail, you will need to make another attempt until you complete two attempts. If still unsuccessful...
+         Disposition to be used - All Attempts Made -->
+    <!-- Q-2a -->
+    <div class="FeatureScript_Section" name="Q2a" DisplayWhen="([ScriptValue: Prac_Phone_Correct] == 'No' && [ScriptValue: Correct_Phone_Nbr] != '')">      
+        <div class="FeatureScript_Text">
+            Q 2a. Is the office able to successfully transfer your call?
+        </div>
+        <select name="IsOfficeTransferSuccessful" class="FeatureScript_Input" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>        
+        <div class="FeatureScript_Section" name="Q2a_OfficeTransferNotSuccessful" DisplayWhen="([ScriptValue: IsOfficeTransferSuccessful] == 'No')">
+            <span style="color: Red; font-weight: bold;">You will need to make another attempt until you complete two attempts.</span>
+        </div>        
+    </div>    
+
+    <!-- Q-2b -->
+    <div class="FeatureScript_Section" name="Q2b" DisplayWhen="(([ScriptValue: Prac_Phone_Correct] == 'No' && [ScriptValue: Correct_Phone_Nbr] != '') && [ScriptValue: IsOfficeTransferSuccessful] == 'No')">      
+        <div class="FeatureScript_Text">
+            Q 2b. Is the second attempt successful?
+        </div>
+        <select name="IsSecondAttemptSuccessful" class="FeatureScript_Input" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>        
+        <div class="FeatureScript_Section" name="Q2b_Comment" DisplayWhen="([ScriptValue: IsSecondAttemptSuccessful] == 'No')">
+            <span style="color: red; font-weight: bold;">Notate Reason in Comment Box (REQUIRED)</span>
+            <br>
+            <textarea name="Comment_Q2" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+        </div>
+        <div class="FeatureScript_Section" name="Q2b_CommentHelperYes" DisplayWhen="([ScriptValue: IsSecondAttemptSuccessful] == 'No')">
+            <span 
+                onclick="navigator.clipboard.writeText('Call dropped, go unanswered, or go to voicemail')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Call dropped, go unanswered, or go to voicemail
+        </div>
+    </div>
+
+    <!-- Q-3 -->
+    <div class="FeatureScript_Section" name="Q3" DisplayWhen="((([ScriptValue: Prac_Phone_Correct] != '' && ([ScriptValue: ScriptStep] == 2)) || [ScriptValue: IsOfficeTransferSuccessful] == 'Yes') || [ScriptValue: IsSecondAttemptSuccessful] == 'Yes')">
+        <div class="FeatureScript_Text">
+            <strong>Option # 1</strong><br>
+            Q 3. We have <strong>[Field: audit_specialty_cms]</strong> listed as their specialty. Is that correct?
+            <br><br>
+            <strong>Option # 2</strong><br>
+            Q 3. We have <strong>[Field: Practitioner_Specialty_Portico]</strong> listed as their specialty. Is that correct?
+        </div>
+
+        <select name="Practitioner_Specialty_Correct" class="FeatureScript_Input" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <div class="FeatureScript_Section" name="Q3_CorrectSpecialty" DisplayWhen="([ScriptValue: Practitioner_Specialty_Correct] == 'No')">
+            <span style="color: Red;">Request corrected specialty and enter (if applicable): </span>
+            <input type="text" name="If_No_Correct_Specialty_Data" class="FeatureScript_Input">
+        </div>
+
+        <div class="FeatureScript_Section" name="Q3_Comment" DisplayWhen="([ScriptValue: Practitioner_Specialty_Correct] != '')">
+            <span style="color: red; font-weight: bold;">Notate Reason in Comment Box (REQUIRED)</span>
+            <br>
+            <textarea name="Comment_Q3" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q3_CommentHelerYes" DisplayWhen="([ScriptValue: Practitioner_Specialty_Correct] == 'Yes')">
+            <span 
+                onclick="navigator.clipboard.writeText('Rep agreed that the specialty is correct.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Rep agreed that the specialty is correct.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q3_CommentHelerNo" DisplayWhen="([ScriptValue: Practitioner_Specialty_Correct] == 'No')">
+            <span 
+                onclick="navigator.clipboard.writeText('The provider has a different specialty (put the correct specialty name if provided).')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - The provider has a different specialty (put the correct specialty name if provided).
+        </div>
+
+    </div>
+
+    <!-- Q-4 -->
+    <div class="FeatureScript_Section" name="Q4" DisplayWhen="([ScriptValue: Practitioner_Specialty_Correct] != '' && ([ScriptValue: ScriptStep] == 3))">
+        <div class="FeatureScript_Text">
+            Q 4. Is he/she currently accepting new patients?
+        </div>
+
+        <select name="Accepting_New_Patients_Question" class="FeatureScript_Input" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="Unknown">Unknown</option>
+        </select>
+
+        <div class="FeatureScript_Section" name="Q4_Comment" DisplayWhen="([ScriptValue: Accepting_New_Patients_Question] != '')">
+            <span style="color: red; font-weight: bold;">Notate Reason in Comment Box (REQUIRED)</span>
+            <br>
+            <textarea name="Comment_Q4" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q4_CommentHelerYes" DisplayWhen="([ScriptValue: Accepting_New_Patients_Question] == 'Yes')">
+            <span 
+                onclick="navigator.clipboard.writeText('Rep confirmed that the provider is actively taking on new patients.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Rep confirmed that the provider is actively taking on new patients.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q4_CommentHelerNo" DisplayWhen="([ScriptValue: Accepting_New_Patients_Question] == 'No')">
+            <span 
+                onclick="navigator.clipboard.writeText('Provider no longer accepts new patients.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - Provider no longer accepts new patients.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q4_CommentHelerUnknown" DisplayWhen="([ScriptValue: Accepting_New_Patients_Question] == 'Unknown')">
+            <span 
+                onclick="navigator.clipboard.writeText('No additional info provided.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - No additional info provided.
+        </div>
+
+    </div>
+
+    <!-- Q-5 -->
+    <div class="FeatureScript_Section" name="Q5" DisplayWhen="([ScriptValue: Accepting_New_Patients_Question] != '' && ([ScriptValue: ScriptStep] == 4))">
+
+        <div class="FeatureScript_Section" DisplayWhen="('[Field: cc_script_name]' == '[Field: product]')">
+            <div class="FeatureScript_Text">
+                Q 5. Is he/she accepting <strong>[Field: cc_script_name]</strong>?
+                <!--Q 5. Does your office participate with <strong>[Field: cc_script_name]</strong>?-->
+            </div>
+
+            <select name="Network_Participation" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="FeatureScript_Section" DisplayWhen="('[Field: cc_script_name]' != '[Field: product]')">
+            <div class="FeatureScript_Text">
+                Q 5. Is he/she accepting <strong>[Field: cc_script_name] [Field: product]</strong>?
+                <!--Q 5. Does your office participate with <strong>[Field: cc_script_name] [Field: product]</strong>?-->
+                <br>
+                <span style="color: red; font-style: italic;">*When the Call Center Script Name and Product are identical, mention it only once.*</span>
+            </div>
+
+            <select name="Network_Participation" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>  
+
+
+        <div class="FeatureScript_Section" name="Q5_Comment" DisplayWhen="([ScriptValue: Network_Participation] != '')">
+            <span style="color: red; font-weight: bold;">Notate Reason in Comment Box (REQUIRED)</span>
+            <br>
+            <textarea name="Comment_Q5" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q5_CommentHelerYes" 
+            DisplayWhen="([ScriptValue: Network_Participation] == 'Yes')
+                            && ('[Field: cc_script_name]' != '[Field: product]')">
+            <span 
+                onclick="navigator.clipboard.writeText('Provider still accepting [Field: cc_script_name] [Field: product].')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Provider still accepting [Field: cc_script_name] [Field: product].
+        </div>
+
+        <div class="FeatureScript_Section" name="Q5_CommentHelerNo" 
+            DisplayWhen="([ScriptValue: Network_Participation] == 'No')
+                            && ('[Field: cc_script_name]' != '[Field: product]')">
+            <span 
+                onclick="navigator.clipboard.writeText('Provider no longer accepting [Field: cc_script_name] [Field: product].')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - Provider no longer accepting [Field: cc_script_name] [Field: product].
+        </div>
+
+        <div class="FeatureScript_Section" name="Q5_CommentHelerYesSame" 
+            DisplayWhen="([ScriptValue: Network_Participation] == 'Yes')
+                            && ('[Field: cc_script_name]' == '[Field: product]')">
+            <span 
+                onclick="navigator.clipboard.writeText('Provider still accepting [Field: cc_script_name].')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - Provider still accepting [Field: cc_script_name].
+        </div>
+
+        <div class="FeatureScript_Section" name="Q5_CommentHelerNoSame" 
+            DisplayWhen="([ScriptValue: Network_Participation] == 'No')
+                            && ('[Field: cc_script_name]' == '[Field: product]')">
+            <span 
+                onclick="navigator.clipboard.writeText('Provider no longer accepting [Field: cc_script_name].')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - Provider no longer accepting [Field: cc_script_name].
+        </div>
+
+    </div>
+
+    <!-- Q-6 -->
+    <div class="FeatureScript_Section" name="Q6" DisplayWhen="([ScriptValue: Network_Participation] != '' && ([ScriptValue: ScriptStep] == 5))">
+        <div class="FeatureScript_Text">
+            Q 6. Lastly, we have your practice/group/clinic name as <strong>[Field: practice_name]</strong>. Is that correct?
+        </div>
+
+        <select name="Provider_Name_Correct" class="FeatureScript_Input" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <div class="FeatureScript_Section" name="Q6_CorrectProviderName" DisplayWhen="([ScriptValue: Provider_Name_Correct] == 'No')">
+            <span style="color: Red;">Request corrected information and enter (if provided): </span>
+            <input type="text" name="If_No_Correct_Provider_Name" class="FeatureScript_Input">
+        </div>
+
+        <div class="FeatureScript_Section" name="Q6_Comment" DisplayWhen="([ScriptValue: Provider_Name_Correct] != '')">
+            <span style="color: red; font-weight: bold;">Notate Reason in Comment Box (REQUIRED)</span>
+            <br>
+            <textarea name="Comment_Q6" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+        </div>
+
+        <div class="FeatureScript_Section" name="Q6_CommentHelperYes" DisplayWhen="([ScriptValue: Provider_Name_Correct] == 'Yes')">
+            <span 
+                onclick="navigator.clipboard.writeText('[Field: practice_name] is correct and confirmed.')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+            - [Field: practice_name] is correct and confirmed.
+        </div>
+
+        <div class="FeatureScript_Section" name="Q6_CommentHelerNo" DisplayWhen="([ScriptValue: Provider_Name_Correct] == 'No')">
+            <span 
+                onclick="navigator.clipboard.writeText('[Field: practice_name] is incorrect, new name is (new clinic name).')"
+                title="Copy"
+                style="cursor: pointer; font-size: 14px; user-select: none;"
+            >
+                📋
+            </span>
+             - [Field: practice_name] is incorrect, new name is (new clinic name).
+        </div>
+
+    </div>
+
+    <!-- Closing -->
+    <div class="FeatureScript_Section" name="Closing" 
+            DisplayWhen="
+            (
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            || ([ScriptValue: IsSecondAttemptSuccessful] == 'No' && [ScriptValue: Comment_Q2] != '')
+            )
+            ">
+
+        <div class="FeatureScript_Text" style="color: red; font-weight: bold;">
+            This completes the audit. Thank you for your time, and have a great day!
+        </div>
+    </div>
+
+    <!-- Disposition Text Helpers -->
+    <!-- All Correct -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            (
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            )
+
+            &&
+            ([ScriptValue: Practitioner_At_This_Location] == 'Yes')
+            && 
+            ([ScriptValue: Suite_Number_Correct] != 'No')
+            &&
+            ([ScriptValue: Prac_Phone_Correct] == 'Yes')
+            &&
+            ([ScriptValue: Practitioner_Specialty_Correct] == 'Yes')
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>All Correct</u></strong> as Disposition
+        </div>
+    </div>
+
+    <!-- Provider not at ANY location -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            (
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            )
+
+            &&
+            (
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group')
+            )
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>Provider not at ANY location</u></strong> as Disposition
+        </div>
+    </div>
+
+    <!-- Address (suite number) needs to be updated -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            (
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            )
+
+            &&
+            
+            (
+                (
+                    ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Not at THIS Location')
+                    &&
+                    ([ScriptValue: Correct_Prac_Address1] == '')
+                    &&
+                    ([ScriptValue: Suite_Number_Correct] == 'No')
+                    &&
+                    ([ScriptValue: Correct_Prac_Address2] == '')
+                    &&
+                    ([ScriptValue: Correct_City] == '')
+                    &&
+                    ([ScriptValue: Correct_State] == '')
+                    &&
+                    ([ScriptValue: Correct_Zip] == '')
+                )
+
+                ||
+
+                (
+                    ([ScriptValue: Practitioner_At_This_Location] == 'Yes')
+                    && 
+                    ([ScriptValue: Suite_Number_Correct] == 'No')
+                    &&
+                    ([ScriptValue: Prac_Phone_Correct] == 'Yes')
+                )    
+            )
+
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>Address (suite number) needs to be updated</u></strong> as Disposition
+        </div>
+    </div>
+
+    <!-- Address needs to be updated -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            (
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            )
+
+            &&
+            
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Not at THIS Location')
+            &&
+            (
+                ([ScriptValue: Correct_Prac_Address1] != '')
+                ||
+                ([ScriptValue: Correct_Prac_Address2] != '')
+                ||
+                ([ScriptValue: Correct_City] != '')
+                ||
+                ([ScriptValue: Correct_State] != '')
+                ||
+                ([ScriptValue: Correct_Zip] != '')
+            )
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            For minor changes (e.g., single-digit difference on street number) → Select <strong><u>Address needs to be updated</u></strong> disposition
+            <br><br>
+            For material address changes (e.g. entirely different street number/location) → Select <strong><u>Provider not at THIS location</u></strong> disposition
+        </div>
+    </div>
+
+    <!-- Provider not at THIS location -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            (
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            )
+
+            &&
+            
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Not at THIS Location')
+            &&
+            ([ScriptValue: Correct_Prac_Address1] == '')
+            &&
+            ([ScriptValue: Suite_Number_Correct] == '' || [ScriptValue: Suite_Number_Correct] == 'Yes')
+            &&
+            ([ScriptValue: Correct_Prac_Address2] == '')
+            &&
+            ([ScriptValue: Correct_City] == '')
+            &&
+            ([ScriptValue: Correct_State] == '')
+            &&
+            ([ScriptValue: Correct_Zip] == '')
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>Provider not at THIS location</u></strong> as Disposition
+        </div>
+    </div>
+
+    <!-- Phone number needs to be updated -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            (
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            )
+
+            &&
+
+            !(
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Not at THIS Location')
+            )
+
+            && 
+
+            ([ScriptValue: Prac_Phone_Correct] == 'No' && [ScriptValue: Correct_Phone_Nbr] == '')
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>Phone number needs to be updated</u></strong> as Disposition
+        </div>
+    </div>
+
+    <!-- Scenario #2 -->
+    <!-- Central Appointment Lines/Switchboard - if the office states you can make an appointment for the provider at that location, 
+         but state there is a better phone # or transfer you to a different person for scheduling, THIS IS NOT PHONE NEEDS TO BE UPDATED
+         Validate remaining questions, update correct phone number field if applicable to log the better phone number
+         Disposition to be used = All Correct -->    
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            (
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            )
+
+            &&
+
+            !(
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Not at THIS Location')
+            )
+
+            && 
+
+            ([ScriptValue: Practitioner_Specialty_Correct] == 'Yes')
+            
+            &&
+
+            ([ScriptValue: Prac_Phone_Correct] == 'No' && [ScriptValue: Correct_Phone_Nbr] != '')
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>All Correct</u></strong> as Disposition
+        </div>
+    </div>
+
+    <!-- Specialty needs to be updated -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            (((
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            )
+
+            &&
+
+            !(
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group')
+                ||
+                ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Not at THIS Location')
+                ||
+                ([ScriptValue: Suite_Number_Correct] == 'No')
+            ))
+
+            || 
+
+            (([ScriptValue: Prac_Phone_Correct] == 'No' && [ScriptValue: Practitioner_Specialty_Correct] == 'No')
+
+            &&
+
+            ([ScriptValue: IsOfficeTransferSuccessful] == 'Yes' && [ScriptValue: Accepting_New_Patients_Question] == 'Yes')
+
+            && 
+
+            ([ScriptValue: Network_Participation] == 'Yes' && [ScriptValue: Provider_Name_Correct] == 'Yes')))
+            
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>Specialty needs to be updated</u></strong> as Disposition
+        </div>
+    </div>
+
+    <!-- Specialty needs to be updated -->
+    <!-- Additional scenario as of 07/06/2026-->
+    <div class="FeatureScript_Section" name="DispositionHelper" DisplayWhen="(
+                                                                    [ScriptValue: Practitioner_At_This_Location] == 'Yes' && [ScriptValue: Suite_Number_Correct] == 'Yes' && [ScriptValue: Comment_Q1] != '' &&
+                                                                    [ScriptValue: Prac_Phone_Correct] == 'Yes' && [ScriptValue: Comment_Q2] != '' &&
+                                                                    [ScriptValue: Practitioner_Specialty_Correct] == 'No' && [ScriptValue: Comment_Q3] != '' &&
+                                                                    [ScriptValue: Accepting_New_Patients_Question] == 'Yes' && [ScriptValue: Comment_Q4] != '' &&
+                                                                    [ScriptValue: Network_Participation] == 'Yes' && [ScriptValue: Comment_Q5] != '' &&
+                                                                    [ScriptValue: Provider_Name_Correct] == 'Yes' && [ScriptValue: Comment_Q6] != '')">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>Specialty needs to be updated</u></strong> as Disposition
+        </div>
+    </div>        
+
+    <!-- Scenario #3 -->
+    <!-- All Attempts Made -->
+    <!-- Central Appointment Lines/Switchboard - if the office transfers you and you get a line that drops, 
+         the call goes unanswered or you get a voicemail, you will need to make another attempt until you complete two attempts. If still unsuccessful...
+         Disposition to be used - All Attempts Made -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="([ScriptValue: IsSecondAttemptSuccessful] == 'No' && [ScriptValue: Comment_Q2] != '')
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            Select <strong><u>All Attempts Made</u></strong> as Disposition
+        </div>
+    </div>    
+
+    <!-- Provider Refused -->
+    <!-- Needs Second Attempt -->
+    <!-- All Attempts Made -->
+    <div class="FeatureScript_Section" name="DispositionHelper" 
+            DisplayWhen="
+            !(
+            ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Retired' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'Deceased' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Practitioner_Not_At_Location_Reason] == 'No Longer with Group' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Prac_Address_Correct] != '' && [ScriptValue: Comment_Q1a] != '')
+            || ([ScriptValue: Provider_Name_Correct] != '' && [ScriptValue: Comment_Q6] != '')
+            )
+            ">
+        <div class="FeatureScript_Text" style="color: red;">
+            <strong>Disposition Guidance:</strong>
+            <br>
+
+            <div style="padding-left: 20px;">
+                <strong><u>Provider Refused</u></strong> - Use only when the provider or office representative explicitly refuses to provide information.
+                <br>
+                <strong><u>Needs Second Attempt</u></strong> - Use when the audit cannot be completed on the first call (e.g., no answer, voicemail, busy signal, callback requested).
+                <br>
+                <strong><u>All Attempts Made</u></strong> - Use only after two unsuccessful call attempts on separate days with no live contact.
+            </div>
+
+            <br>
+
+            <label style="display: inline-flex; align-items: center; gap: 6px;">
+                <input type="checkbox" name="CheckBox" class="FeatureScript_Input">
+                Show <strong><u>Provider Refused/Needs Second Attempt/All Attempts Made</u></strong> Comment
+            </label>
+        </div>
+    </div>
+
+    <!-- Provider Refused/Needs Second Attempt/All Attempts Made Comment -->
+    <div class="FeatureScript_Section" name="AllCorrect_Comment" DisplayWhen="([ScriptValue: CheckBox] == true)">
+
+        <span style="color: red; font-weight: bold;">Provider Refused/Needs Second Attempt/All Attempts Made comment (REQUIRED)</span>
+        <br>
+        <textarea name="Comment_Refused" class="FeatureScript_Input" required style="width:100%; height:80px; box-sizing:border-box;"></textarea>
+    </div>
+    
+</div>

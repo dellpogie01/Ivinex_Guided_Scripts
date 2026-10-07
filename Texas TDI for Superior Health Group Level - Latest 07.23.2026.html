@@ -1,0 +1,294 @@
+Texas TDI for Superior Health Group Level (Ever) 07.23.2026
+
+<!--TDI for Superior Health_Group Level Script.7.15.2026.xlsx-->
+
+<div class="FeatureScript_Page" name="Page1" StepButtons="ScriptStep" MaxStepValue="3">
+    <div class="FeatureScript_Section" name="introduction">
+        <div class="FeatureScript_Text">
+            <strong>Hi, my name is [User: alias]. I am calling on behalf of [Field: company_name] on a recorded line for training and quality assurance reasons to conduct a required Regulatory Audit of your office's appointment availability and wait times. This will only take a few minutes</strong>.
+            <br><br>
+            For Automated Systems: <strong>PLEASE LISTEN TO THE MENU PROMPTS AND CAREFULLY CHOOSE THE CORRECT ONE TO GET TO THE APPOINTMENT LINE, DOCTOR'S OFFICE, ETC.</strong>
+        </div>
+    </div>
+
+    <div class="FeatureScript_Section" name="Section1" DisplayWhen="[ScriptValue: ScriptStep] == 0">
+        <div class="FeatureScript_Section" name="question1">
+            <div class="FeatureScript_Text">
+                Q 1. Can you please confirm that <strong>[Field: practice_name]</strong> participates with <strong>[Field: company_name]</strong>?
+                <br>
+                <select class="FeatureScript_Input" required name="ParticipatingProvider">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Do not Read/Not able to ascertain">Do not Read/Not able to ascertain</option>
+                </select>
+            </div>
+
+            <div class="FeatureScript_Section" name="question1_Do not Read/Not able to ascertain" DisplayWhen="([ScriptValue: ParticipatingProvider] == 'Do not Read/Not able to ascertain')">
+                <div class="FeatureScript_Text">
+                    <span style="color: Red; font-weight: bold;">**End call- add number to redialer (no pass/fail)**</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="FeatureScript_Section" name="question1a" DisplayWhen="([ScriptValue: ParticipatingProvider] == 'No')">
+            <div class="FeatureScript_Text">
+                Q 1a. Are there any other <span style="font-weight: bold;">[Field: physician_segmentation_id]</span> providers at the office who participate 
+                with <span style="font-weight: bold;">[Field: company_name]</span>?
+                <br>
+                <select class="FeatureScript_Input" required name="AltProviderAnswer">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="FeatureScript_Section" name="question1a_name" DisplayWhen="([ScriptValue: AltProviderAnswer] == 'Yes')">
+                <div class="FeatureScript_Text">
+                    *If Yes - Enter Name: 
+                    <input type="text" name="AltProvider" class="FeatureScript_Input" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="question2" DisplayWhen="([ScriptValue: ParticipatingProvider] == 'Yes' || [ScriptValue: AltProvider] != '' || [ScriptValue: AltProviderAnswer] == 'No')">
+            <div class="FeatureScript_Text">
+                Q 2. Can you confirm <span style="font-weight: bold;">[Field: phone]</span> is the correct number a patient would dial to schedule appointments?
+                <br>
+                <select class="FeatureScript_Input" required name="CentralScheduling">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Do not Read/Not able to ascertain">Do not Read/Not able to ascertain</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: CentralScheduling] == 'No'">
+            <div class="FeatureScript_Text">
+                Q 3. <strong>If no</strong> — can you please provide that number and transfer me?
+                <br>
+                <select name="ProviderNewPhoneAnswer" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ProviderNewPhoneAnswer] == 'No'">
+                <div class="FeatureScript_Text" style="color:red; font-weight:bold;">
+                    **If no - End Call — Dispo new number
+                </div>
+            </div>
+
+            <div class="FeatureScript_Section" DisplayWhen="[ScriptValue: ProviderNewPhoneAnswer] == 'Yes'">
+                <div class="FeatureScript_Text">
+                    <span style="color:red">*Ask to be transferred to the new number — Repeat intro, go to Q4*</span>
+                    <br>
+                    <input type="text" name="ProviderNewPhone" class="FeatureScript_Input" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="question4" DisplayWhen="([ScriptValue: CentralScheduling] == 'Yes' || [ScriptValue: CentralScheduling] == 'Do not Read/Not able to ascertain' || [ScriptValue: ProviderNewPhone] != '')">
+            <div class="FeatureScript_Text">
+                Q 4. May I ask who I am speaking with?
+                <br>
+                <select class="FeatureScript_Input" required name="CallerNameAnswer">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="FeatureScript_Section" name="question4_name" DisplayWhen="([ScriptValue: CallerNameAnswer] == 'Yes')">
+                <div class="FeatureScript_Text">
+                    *If Yes - Enter Name: 
+                    <input type="text" name="CallerName" class="FeatureScript_Input" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="FeatureScript_Section" name="question5" DisplayWhen="([ScriptValue: CallerNameAnswer] == 'No' || [ScriptValue: CallerName] != '')">
+            <div class="FeatureScript_Text">
+                Q 5. Can you please confirm that <span style="font-weight: bold;">[Field: physician_segmentation_id]</span> is the correct category for the provider?
+                <br>
+                <select class="FeatureScript_Input" required name="CorrectSegmentation">
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="FeatureScript_Section" name="question5_wrongseg" DisplayWhen="([ScriptValue: CorrectSegmentation] == 'No')">
+                <div class="FeatureScript_Text">
+                    <span style="color: Red; font-weight: bold;">**If no - End call dispo Wrong Segmentation**</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="FeatureScript_Section" name="IntroAppointments" DisplayWhen="([ScriptValue: CorrectSegmentation] == 'Yes' && [ScriptValue: ScriptStep] >= 1)">
+        <div class="FeatureScript_Text">
+            <span style="color: Red; font-weight: bold;">** Now I am going to ask you a few questions about appointment availability. The next questions will pertain to either Telehealth or In-Person which ever is the soonest. **</span>
+        </div>
+    </div>
+
+    <div class="FeatureScript_Section" name="question6" DisplayWhen="([ScriptValue: CorrectSegmentation] == 'Yes') && [ScriptValue: ScriptStep] == 1">
+        <div class="FeatureScript_Text">
+            Q 6. Does your office offer Telehealth appointments?
+            <br>
+            <select class="FeatureScript_Input" required name="TeleHealthOffered">
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+    </div>
+
+    <!--7th Question-->
+    <div class="FeatureScript_Section" name="Question_7" DisplayWhen="(([ScriptValue: TeleHealthOffered] == 'Yes' || [ScriptValue: TeleHealthOffered] == 'No') && [ScriptValue: ScriptStep] == 2)">
+        <div class="FeatureScript_Section" name="Question_7a">
+            <div class="FeatureScript_Text">
+                Q 7. What is the soonest availible appointment for <strong>routine care</strong>?
+                <br>
+            </div>
+            <select name="NextRoutineAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Specific Date And Time">Specific Date And Time</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Provider Does Not Offer This Service">Provider Does Not Offer This Service</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+            <!--Specific Date and Time-->
+            <div class="FeatureScript_Section" name="Question_7b" DisplayWhen="([ScriptValue: NextRoutineAptDateTimeResponse] == 'Specific Date And Time')">
+                <div class="FeatureScript_Text">
+                    <input type="datetime-local" name="NextRoutineAptDateTime" class="FeatureScript_Input" required>
+                </div>
+            </div>
+            <!--Patient will be a walk-in-->
+            <div class="FeatureScript_Section" name="Question_7c" DisplayWhen="([ScriptValue: NextRoutineAptDateTimeResponse] == 'Patient will be a walk-in')">
+                Set Time to 5pm today:
+                <br>
+                <input type="datetime-local" name="NextRoutineAptDateTime" class="FeatureScript_Input" required>
+            </div>
+            <!--Unable to Obtain-->
+            <div class="FeatureScript_Section" name="Question_7d" DisplayWhen="([ScriptValue: NextRoutineAptDateTimeResponse] == 'Unable to Obtain')">
+                <span style='color: red;'>*Select the option that best represents why the office was unable to provide a response to the question.</span>
+                <select name="NextRoutineAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Specific Date And Time" hidden>Specific Date And Time</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Provider Does Not Offer This Service" hidden>Provider Does Not Offer This Service</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Unable to Obtain - Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Unable to Obtain - Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Unable to Obtain - Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Unable to Obtain - Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Unable to Obtain - Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Unable to Obtain - Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Unable to Obtain - Depends on Doctor's schedule</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!--7ath Question-->
+    <div class="FeatureScript_Section" name="Question_7a" DisplayWhen="([ScriptValue: ScriptStep] == 3 && ([ScriptValue: NextRoutineAptDateTimeResponse] != '' && [ScriptValue: NextRoutineAptDateTimeResponse] != 'Unable to Obtain'))">
+        <div class="FeatureScript_Section" name="Question_7aa">
+            <div class="FeatureScript_Text">
+                Q 7a. If <strong>[Field: practice_name]</strong> is unavailable within <strong>21 Calendar Days</strong>, is there another provider that participates with <strong>[Field: company_name]</strong> that is available within 21 Calendar Days?
+                <br>
+            </div>
+            <select name="AltProviderNextRoutineAptDateTimeResponse" class="FeatureScript_Input" required>
+                <option value=""></option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Patient will be a walk-in">Patient will be a walk-in</option>
+                <option value="Unable to Obtain">Unable to Obtain</option>
+                <option value="Unable to Obtain - Service(s) not offered by Provider or Office" hidden>Unable to Obtain - Service(s) not offered by Provider or Office</option>
+                <option value="Unable to Obtain - Referred to ER" hidden>Unable to Obtain - Referred to ER</option>
+                <option value="Unable to Obtain - Appointment availability based on Doctor's schedule" hidden>Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                <option value="Unable to Obtain - Patient information required" hidden>Unable to Obtain - Patient information required</option>
+                <option value="Unable to Obtain - Additional authorization required" hidden>Unable to Obtain - Additional authorization required</option>
+                <option value="Unable to Obtain - Appointment priority based on actual urgency" hidden>Unable to Obtain - Appointment priority based on actual urgency</option>
+                <option value="Unable to Obtain - Representative not in front office" hidden>Unable to Obtain - Representative not in front office</option>
+                <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office" hidden>Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                <option value="Unable to Obtain - Remote Scheduler" hidden>Unable to Obtain - Remote Scheduler</option>
+                <option value="Unable to Obtain - Depends upon type of appointment" hidden>Unable to Obtain - Depends upon type of appointment</option>
+                <option value="Unable to Obtain - Depends on Doctor's schedule" hidden>Unable to Obtain - Depends on Doctor's schedule</option>
+            </select>
+            <!--Yes, Enter Name, Date and Time-->
+            <div class="FeatureScript_Section" name="Question_7aaa" DisplayWhen="([ScriptValue: AltProviderNextRoutineAptDateTimeResponse] == 'Yes')">
+                <div class="FeatureScript_Text">
+                    If Yes - Enter Name: <input type="text" name="AltProviderNextRoutineName" class="FeatureScript_Input" required>
+                    <input type="datetime-local" name="AltProviderNextRoutineAptDateTime" class="FeatureScript_Input" required>
+                </div>
+            </div>
+            <!--Patient will be a walk-in-->
+            <div class="FeatureScript_Section" name="Question_7ac" DisplayWhen="([ScriptValue: AltProviderNextRoutineAptDateTimeResponse] == 'Patient will be a walk-in')">
+                Set Time to 5pm today:
+                <br>
+                <input type="datetime-local" name="AltProviderNextRoutineAptDateTime" class="FeatureScript_Input" required>
+            </div>
+            <!--Unable to Obtain-->
+            <div class="FeatureScript_Section" name="Question_7ad" DisplayWhen="([ScriptValue: AltProviderNextRoutineAptDateTimeResponse] == 'Unable to Obtain')">
+                <span style='color: red;'>*Select the option that best represents why the office was unable to provide a response to the question.</span>
+                <select name="AltProviderNextRoutineAptDateTimeResponse" class="FeatureScript_Input" required>
+                    <option value=""></option>
+                    <option value="Yes" hidden>Yes</option>
+                    <option value="No" hidden>No</option>
+                    <option value="Patient will be a walk-in" hidden>Patient will be a walk-in</option>
+                    <option value="Unable to Obtain" hidden>Unable to Obtain</option>
+                    <option value="Unable to Obtain - Service(s) not offered by Provider or Office">Service(s) not offered by Provider or Office</option>
+                    <option value="Unable to Obtain - Referred to ER">Referred to ER</option>
+                    <option value="Unable to Obtain - Appointment availability based on Doctor's schedule">Unable to Obtain - Appointment availability based on Doctor's schedule</option>
+                    <option value="Unable to Obtain - Patient information required">Unable to Obtain - Patient information required</option>
+                    <option value="Unable to Obtain - Additional authorization required">Unable to Obtain - Additional authorization required</option>
+                    <option value="Unable to Obtain - Appointment priority based on actual urgency">Unable to Obtain - Appointment priority based on actual urgency</option>
+                    <option value="Unable to Obtain - Representative not in front office">Unable to Obtain - Representative not in front office</option>
+                    <option value="Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office">Unable to Obtain - Central Scheduling or Call Center - Unable to transfer to front office</option>
+                    <option value="Unable to Obtain - Remote Scheduler">Unable to Obtain - Remote Scheduler</option>
+                    <option value="Unable to Obtain - Depends upon type of appointment">Unable to Obtain - Depends upon type of appointment</option>
+                    <option value="Unable to Obtain - Depends on Doctor's schedule">Unable to Obtain - Depends on Doctor's schedule</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="FeatureScript_Section" name="Close" DisplayWhen="([ScriptValue: ParticipatingProvider] == 'Do not Read/Not able to ascertain' || 
+                                                                 [ScriptValue: ProviderNewPhoneAnswer] == 'No' || 
+                                                                 [ScriptValue: CorrectSegmentation] == 'No' ||                                                                  
+                                                                 [ScriptValue: AltProviderNextRoutineAptDateTimeResponse] == 'No' ||
+                                                                 ([ScriptValue: AltProviderNextRoutineName] != '' && [ScriptValue: AltProviderNextRoutineAptDateTime] != '') ||
+                                                                 ([ScriptValue: AltProviderNextRoutineAptDateTimeResponse] == 'Patient will be a walk-in' && [ScriptValue: AltProviderNextRoutineAptDateTime] != '') ||
+                                                                 ([ScriptValue: AltProviderNextRoutineAptDateTimeResponse] != '' && [ScriptValue: AltProviderNextRoutineAptDateTimeResponse] != 'Yes' && [ScriptValue: AltProviderNextRoutineAptDateTimeResponse] != 'No' && [ScriptValue: AltProviderNextRoutineAptDateTimeResponse] != 'Patient will be a walk-in' && [ScriptValue: AltProviderNextRoutineAptDateTimeResponse] != 'Unable to Obtain'))">
+        <div class="FeatureScript_Text">
+            <span style="color: red; font-weight: bold;">** This completes the audit. Thank you for your time, and have a great day! **</span>
+        </div>
+    </div>
+        
+</div>
+
+NextRoutineAptDateTimeResponseResult = ([ScriptValue: NextRoutineAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextRoutineAptDateTime], days) <= 21),
+NextRoutineAptDateTimeResponseResultIncomplete = ([ScriptValue: NextRoutineAptDateTime] == ''),
+NextRoutineAptDateTimeResponseResultNCQA = ([ScriptValue: NextRoutineAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: NextRoutineAptDateTime], days) <= 21),
+NextRoutineAptDateTimeResponseResultNCQAIncomplete = ([ScriptValue: NextRoutineAptDateTime] == ''),
+AltProviderNextRoutineAptDateTimeResponseResult = ([ScriptValue: AltProviderNextRoutineAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: AltProviderNextRoutineAptDateTime], days) <= 21),
+AltProviderNextRoutineAptDateTimeResponseResultIncomplete = ([ScriptValue: AltProviderNextRoutineAptDateTime] == ''),
+AltProviderNextRoutineAptDateTimeResponseResultNCQA = ([ScriptValue: AltProviderNextRoutineAptDateTime] != '' && DateDiff([Field: created_date], [ScriptValue: AltProviderNextRoutineAptDateTime], days) <= 21),
+AltProviderNextRoutineAptDateTimeResponseResultNCQAIncomplete = ([ScriptValue: AltProviderNextRoutineAptDateTime] == '')
